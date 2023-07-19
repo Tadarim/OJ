@@ -1,0 +1,27 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+a{
+    color: rgba(38, 38, 38, 1);
+    text-decoration: none;
+}
+
+img{
+    vertical-align: top;
+}
+
+input{
+    border: none;
+    background-color: #fff;
+}
+
+button{
+    border: 0;
+    outline: 0;
+}
+
+/* ::-webkit-scrollbar{
+    display: none;
+} */
