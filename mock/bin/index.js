@@ -5,4 +5,6 @@ const port = 3001;
 app.set('port', port);
 
 const server = http.createServer(app);
-server.listen(port);
+server.listen({port}, () => {
+    console.log('server listening at localhost:' + port);
+});
