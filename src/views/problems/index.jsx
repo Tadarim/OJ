@@ -1,12 +1,11 @@
 import React, { memo, useEffect, useState } from 'react'
 import { ProblemsWrapper } from './styled'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import ProblemContainer from './c-cpns/problem-cotainer'
 import CodeArea from './c-cpns/codeArea'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { fetchProblemAction } from '../../store/modules/problem'
 import { codeSubmit } from '../../services/modules/submit'
-import Submission from './c-cpns/submission'
 
 const Problems = memo(() => {
 
@@ -27,8 +26,6 @@ const Problems = memo(() => {
   const {pid} = useParams()
 
   const [showResult,setShowResult] = useState(false)
-
-  const navigate = useNavigate()
 
   const submitHandler = (lang,code) => {
     codeSubmit(pid,lang,code)

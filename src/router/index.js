@@ -3,6 +3,8 @@ import { Navigate } from "react-router-dom";
 import Problemset from '../views/problemset'
 import PasswordReset from "../views/password-reset";
 import Submission from "../views/problems/c-cpns/submission";
+import Comments from "../views/problems/c-cpns/comments";
+import Solution from "../views/problems/c-cpns/solution";
 
 const Home = React.lazy(()=> import('../views/home'))
 const ProblemsetMain = React.lazy(()=> import('../views/problemset/c-cpns/problemset-main'))
@@ -69,11 +71,11 @@ const routes = [
         children:[
             {
                 path:'comments',
-                element:<ProblemsetMain></ProblemsetMain>
+                element:<Comments></Comments>
             },
             {
                 path:'solution',
-                element:<ProblemsetMain></ProblemsetMain>
+                element:<Solution></Solution>
             },
             {
                 path:'submissions',

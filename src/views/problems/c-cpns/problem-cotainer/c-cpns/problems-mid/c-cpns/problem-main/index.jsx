@@ -6,17 +6,13 @@ import { MainWrapper } from './styled'
 
 const ProblemMain = memo((props) => {
 
-  const {problemInfo,codeTemplate,codeLang} = props
+  const { problemInfo } = props
 
   const difficulty = new Map([
     [1, '简单'],
     [2, '中等'],
     [3, '困难'],
   ])
-
-  let template = codeTemplate?.filter((item) => {
-    return item.language === codeLang
-  })
 
   return (
     <MainWrapper>
@@ -42,11 +38,6 @@ const ProblemMain = memo((props) => {
             <ReactMarkdown children={problemInfo?.show_content}></ReactMarkdown>
           </div>
         </div>
-        
-        <pre className="problem-codeTemplate">
-            代码模板{'\n'}
-            {template[0]?.template}
-        </pre>
       </div>
     </MainWrapper>
   )

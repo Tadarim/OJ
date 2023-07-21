@@ -1,42 +1,29 @@
-import React, { memo, useRef, useEffect, useState } from 'react'
-import { basicSetup } from 'codemirror';
-import { EditorView } from '@codemirror/view';
-import { EditorState } from '@codemirror/state';
-import { javascript } from '@codemirror/lang-javascript';
-import { espresso } from 'thememirror';
+import React, { memo, useEffect, useState } from 'react'
+import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/mode-jsx';// jsx模式的包
+import 'ace-builds/src-noconflict/theme-iplastic';// 主题样式
+import 'ace-builds/src-noconflict/ext-language_tools'; // 代码联想
 import classNames from 'classnames';
 
 import { CodeAreaWrapper } from './styled'
 import { changeCodeLangAction } from '../../../../store/modules/problem';
 import { useDispatch } from 'react-redux';
 
-const javaScriptLang = javascript();
-
 const CodeArea = memo((props) => {
 
-    const { codeTemplate, codeLang, submitHandler } = props
+    const {codeTemplate,submitHandler } = props
 
-    let template = codeTemplate?.filter((item) => {
+    const [codeLang,setCodeLang] = useState('C')
+
+    let [template] = codeTemplate.filter((item)=>{
         return item.language === codeLang
     })
 
-    // 初始化CodeMirror编辑器
-    const editorRef = useRef(null);
-    const [doc, setDock] = useState(template[0]?.template);
+    const [doc, setDoc] = useState(template?.template);
 
-    const state = EditorState.create({
-        doc,
-        extensions: [
-            basicSetup,
-            javaScriptLang,
-            espresso,
-            EditorView.updateListener.of((v) => {
-                if (v.docChanged) {
-                    setDock(v.state.doc.toString());
-                }
-            }),
-        ],
-    });
+    useEffect(() => {
+        setDoc(template?.template);
+    }, [template?.template])
 
     const [showList, setShowList] = useState(false)
     const refs = []
@@ -44,23 +31,12 @@ const CodeArea = memo((props) => {
     const dispatch = useDispatch()
     const langItemClickHandler = (ref) => {
         dispatch(changeCodeLangAction(ref.innerHTML))
+        setCodeLang(ref.innerHTML)
         setShowList(false)
     }
     const langSelectHandler = () => {
         setShowList(!showList)
     }
-
-    useEffect(() => {
-        const editor = new EditorView({
-            state,
-            parent: editorRef.current,
-        });
-
-        return () => {
-            editor.destroy(); // 注意：此后此处要随组件销毁
-        };
-    }, []);
-
 
     return (
         <CodeAreaWrapper>
@@ -82,9 +58,9 @@ const CodeArea = memo((props) => {
                                 </button>
                                 <div className={classNames("lang-list", { isActive: showList })}>
                                     {langList.map((item, index) => {
-                                        return <div 
-                                            key={index} 
-                                            ref={(r) => { if (r) refs.push(r) }} 
+                                        return <div
+                                            key={index}
+                                            ref={(r) => { if (r) refs.push(r) }}
                                             onClick={() => { langItemClickHandler(refs[index]) }}
                                         >{item}</div>
                                     })}
@@ -92,16 +68,39 @@ const CodeArea = memo((props) => {
                             </div>
                         </div>
                         <div className="codemirror-container">
-                            <div ref={editorRef}></div>
+                            <AceEditor
+                                mode='jsx'
+                                theme="iplastic"
+                                name="app_code_editor"
+                                fontSize={14}
+                                showPrintMargin
+                                height="100%"
+                                width="100%"
+                                showGutter
+                                onChange={value => {
+                                    setDoc(value); // 输出代码编辑器内值改变后的值
+                                }}
+                                value={doc}
+                                wrapEnabled
+                                highlightActiveLine  //突出活动线
+                                enableSnippets  //启用代码段
+                                setOptions={{
+                                    enableBasicAutocompletion: true,   //启用基本自动完成功能
+                                    enableLiveAutocompletion: true,   //启用实时自动完成功能 （比如：智能代码提示）
+                                    enableSnippets: true,  //启用代码段
+                                    showLineNumbers: true,
+                                    tabSize: 2,
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
-                <div className="code-area-bottom-container">
-                    <div className="submit-container">
-                        <button className="submit" onClick={() => { submitHandler(codeLang, doc) }}>
-                            <span>提交</span>
-                        </button>
-                    </div>
+            </div>
+            <div className="code-area-bottom-container">
+                <div className="submit-container">
+                    <button className="submit" onClick={() => { submitHandler(codeLang, doc) }}>
+                        <span>提交</span>
+                    </button>
                 </div>
             </div>
         </CodeAreaWrapper>

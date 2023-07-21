@@ -7,7 +7,6 @@ export const SubmissionsWrapper = styled.div`
     overflow: auto;
     background: rgba(255,255,255, 1);
     border-right: 1px solid rgba(240,240,240, 1);
-
        
     .container{
         overflow:auto ;

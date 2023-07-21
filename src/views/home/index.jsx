@@ -89,8 +89,8 @@ const Home = () => {
           </div>
         </div>
       </div>
-
     </HomeWrapper>
+    
   )
 }
 

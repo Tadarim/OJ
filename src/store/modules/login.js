@@ -17,6 +17,7 @@ const loginSlice = createSlice({
     },
     reducers:{
         changeUserTokenAction(state,{payload}){
+            console.log(payload.data)
             state.token = payload.data.accessToken
         },
         changeShowLoginAction(state,{payload}){

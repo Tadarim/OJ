@@ -18,10 +18,18 @@ function getModules(dirPath) {
         });
         return modules;
     }
-    return Loop(dirPath).map(m => ({
-        path: m.path.replace(dirPath, '').replace('.js', '').replace('index', ''),
-        module: m.module
-    }));
+    return Loop(dirPath).map(m => {
+        const realPath = m.path.replaceAll('\\', '/');
+        return ({
+            path: m.path.
+                replace(dirPath, '').
+                replace('.js', '').
+                replace('index', '').
+                replaceAll('\\', '/')
+            ,
+            module: m.module
+        })
+    });
 }
 
 const pw = function (func) {
