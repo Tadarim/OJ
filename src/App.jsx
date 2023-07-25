@@ -25,7 +25,6 @@ const App = () => {
     <div className='app'>
       <AppHeader></AppHeader>
         {useRoutes(routes)}
-
       {showLogin && <Backdrop>
         <Login 
         showBtnClick

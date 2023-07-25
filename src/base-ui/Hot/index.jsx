@@ -1,7 +1,7 @@
 import React from 'react'
 import { HotWrappr } from './styled'
-import AsideCard from '../../../../base-ui/aside-Card'
-import RankingItem from '../../../../base-ui/ranking-item'
+import AsideCard from '../aside-Card'
+import RankingItem from '../ranking-item'
 
 const Hot = (props) => {
   const {title,content} = props

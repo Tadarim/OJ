@@ -7,7 +7,8 @@ const store = configureStore({
     reducer:{
         login: loginReducer,
         problemset: problemsetReducer,
-        problem: problemReducer
+        problem: problemReducer,
+        
     }
 })
 

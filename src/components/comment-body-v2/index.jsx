@@ -22,7 +22,7 @@ const CommentBodyV2 = memo((props) => {
             <div className="comment-header">
                 <div className="avatar-wrapper">
                     <a href={"/u/susu-5/"}>
-                        <img src="https://assets.leetcode.cn/aliyun-lc-upload/default_avatar.png" alt="susu-5" class="css-17cu2v5-CommentAvatar e19tnut63" />
+                        <img src="https://assets.leetcode.cn/aliyun-lc-upload/default_avatar.png" alt="susu-5" className="css-17cu2v5-CommentAvatar e19tnut63" />
                     </a>
                     <div className="userName-wrapper">
                         <span>susu</span>

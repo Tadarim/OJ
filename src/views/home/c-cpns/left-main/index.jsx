@@ -39,7 +39,6 @@ const LeftMain = () => {
             {link:'/topic/xue-xi/',name:'学习'},
           ]}
         >
-
         </ContentDiscuss>
     </MainWrapper>
   )

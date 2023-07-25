@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-jsx';// jsx模式的包
 import 'ace-builds/src-noconflict/theme-iplastic';// 主题样式
@@ -8,21 +8,25 @@ import classNames from 'classnames';
 import { CodeAreaWrapper } from './styled'
 import { changeCodeLangAction } from '../../../../store/modules/problem';
 import { useDispatch } from 'react-redux';
+import { test } from '../../../../services/modules/test';
+
+import 'react-quill/dist/quill.snow.css';
+
 
 const CodeArea = memo((props) => {
 
-    const {codeTemplate,submitHandler } = props
+    const { codeTemplate, submitHandler } = props
 
-    const [codeLang,setCodeLang] = useState('C')
+    const [codeLang, setCodeLang] = useState('C')
 
-    let [template] = codeTemplate.filter((item)=>{
+    let [template] = codeTemplate.filter((item) => {
         return item.language === codeLang
     })
 
     const [doc, setDoc] = useState(template?.template);
 
     useEffect(() => {
-        setDoc(template?.template);
+        setDoc(template?.template)
     }, [template?.template])
 
     const [showList, setShowList] = useState(false)
@@ -68,6 +72,7 @@ const CodeArea = memo((props) => {
                             </div>
                         </div>
                         <div className="codemirror-container">
+                            
                             <AceEditor
                                 mode='jsx'
                                 theme="iplastic"
@@ -91,7 +96,8 @@ const CodeArea = memo((props) => {
                                     showLineNumbers: true,
                                     tabSize: 2,
                                 }}
-                            />
+                            /> 
+                           
                         </div>
                     </div>
                 </div>

@@ -15,7 +15,7 @@ const ArticleItem = memo((props) => {
       <div className="main">
         <div className="header">
           <a href="/u/leetcode-solution/" className="avatar-wrapper">
-            <img src="https://assets.leetcode.cn/aliyun-lc-upload/users/leetcode-solution/avatar_1582018938.png?x-oss-process=image%2Fresize%2Ch_40%2Cw_40%2Fformat%2Cwebp" size="20" class="css-13g9qu9-AvatarComponent e1ajzf6f0" alt='' />
+            <img src="https://assets.leetcode.cn/aliyun-lc-upload/users/leetcode-solution/avatar_1582018938.png?x-oss-process=image%2Fresize%2Ch_40%2Cw_40%2Fformat%2Cwebp" size="20" className="css-13g9qu9-AvatarComponent e1ajzf6f0" alt='' />
           </a>
           <h3 className="title-wrapper">
             <a href="/problems/remove-element/solution/yi-chu-yuan-su-by-leetcode-solution-svxi/">

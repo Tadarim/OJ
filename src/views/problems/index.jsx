@@ -6,6 +6,7 @@ import CodeArea from './c-cpns/codeArea'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { fetchProblemAction } from '../../store/modules/problem'
 import { codeSubmit } from '../../services/modules/submit'
+import MdEditor from '../../components/mdEditor'
 
 const Problems = memo(() => {
 
@@ -39,6 +40,12 @@ const Problems = memo(() => {
   //   dispatch(fetchProblemAction(pid))
   // },[dispatch,pid])
 
+  const [useMd,setUseMd] = useState(false) 
+
+  const modeChangeHandler = () => {
+    setUseMd(!useMd)
+  }
+
   return (
     <ProblemsWrapper>
       <div className="problems">
@@ -49,13 +56,23 @@ const Problems = memo(() => {
           codeTemplate={codeTemplate} 
           codeLang={codeLang} 
           showResult={showResult} 
-        ></ProblemContainer>
+          useMd={useMd}
+          modeChangeHandler={modeChangeHandler}
+        />
         <div className="middle-area"></div>
-        <CodeArea 
+       { useMd ?
+        <MdEditor
+          mode='solution'
+          btnText=''
+          cancelHandler={modeChangeHandler}
+        />
+        :
+        <CodeArea
           submitHandler={submitHandler} 
           codeTemplate={codeTemplate} 
           codeLang={codeLang} 
-        ></CodeArea>
+        />
+        }
       </div>
     </ProblemsWrapper>
   )

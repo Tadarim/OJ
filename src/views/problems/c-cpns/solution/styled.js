@@ -58,6 +58,8 @@ export const SolutionWrapper = styled.div`
 
             &:hover{
                 box-shadow: none;
+                background-color: rgba(38.25,153.85,79.05, 1);
+                color: rgba(255,255,255, 1);
             }
 
             svg{

@@ -14,22 +14,22 @@ const  tabList = [
         link:'/problemset/all',
         desc:'题库'
     },
+    // {
+    //     link:'/home',
+    //     desc:'竞赛'
+    // },
     {
-        link:'/home',
-        desc:'竞赛'
-    },
-    {
-        link:'/home',
+        link:'/circle',
         desc:'讨论'
     },
-    {
-        link:'/home',
-        desc:'求职'
-    },
-    {
-        link:'/home',
-        desc:'商店'
-    },
+    // {
+    //     link:'/home',
+    //     desc:'求职'
+    // },
+    // {
+    //     link:'/home',
+    //     desc:'商店'
+    // },
 ] 
 
 const HeaderLeft = () => {

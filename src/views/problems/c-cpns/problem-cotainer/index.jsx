@@ -5,7 +5,7 @@ import ProblemsMid from './c-cpns/problems-mid'
 
 const ProblemContainer = memo((props) => {
 
-  const {tabSelect,tabClickHandler,problemInfo,codeTemplate,codeLang,showResult} = props
+  const {tabSelect,tabClickHandler,problemInfo,codeTemplate,codeLang,showResult,useMd,modeChangeHandler} = props
 
   return (
     <ContainerWrapper>
@@ -17,6 +17,8 @@ const ProblemContainer = memo((props) => {
               codeTemplate={codeTemplate} 
               codeLang={codeLang}
               showResult={showResult}
+              useMd={useMd}
+              modeChangeHandler={modeChangeHandler}
             ></ProblemsMid>
             <ProblemsBottom></ProblemsBottom>
         </div>
