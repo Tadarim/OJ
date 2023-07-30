@@ -1,16 +1,19 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import PasswordReset from "../views/password-reset";
+import SolutionInfo from "../views/problems/c-cpns/solution/c-cpns/solution-info";
 
 const Home = React.lazy(() => import('../views/home'))
 const Problemset = React.lazy(() => import('../views/problemset'))
 const Problems = React.lazy(() => import('../views/problems'))
 const ProblemsetMain = React.lazy(() => import('../views/problemset/c-cpns/problemset-main'))
+const ProblemMain = React.lazy(() => import("../views/problems/c-cpns/problem-cotainer/c-cpns/problems-mid/c-cpns/problem-main"))
 const Submission = React.lazy(() => import("../views/problems/c-cpns/submission"))
 const Comments = React.lazy(() => import("../views/problems/c-cpns/comments"))
 const Solution = React.lazy(() => import("../views/problems/c-cpns/solution"))
 const Circle = React.lazy(() => import('../views/circle'))
 const Discuss = React.lazy(() => import('../views/circle/c-cpns/discuss'))
+const Search = React.lazy(() => import('../views/search'))
 
 const routes = [
     {
@@ -65,12 +68,16 @@ const routes = [
     },
     {
         path: '/problems/:pid',
-        element: <Problems></Problems>
+        element: <Navigate to={'description'}></Navigate>
     },
     {
         path: '/problems/:pid',
         element: <Problems></Problems>,
         children: [
+            {
+                path: 'description',
+                element: <ProblemMain></ProblemMain>
+            },
             {
                 path: 'comments',
                 element: <Comments></Comments>
@@ -78,6 +85,10 @@ const routes = [
             {
                 path: 'solution',
                 element: <Solution></Solution>
+            },
+            {
+                path: 'solution/:sid',
+                element: <SolutionInfo></SolutionInfo>
             },
             {
                 path: 'submissions',
@@ -92,6 +103,10 @@ const routes = [
     {
         path: '/circle/discuss/:did',
         element: <Discuss></Discuss>
+    },
+    {
+        path: '/search',
+        element: <Search></Search>
     }
 ]
 

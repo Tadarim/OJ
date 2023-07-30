@@ -110,7 +110,6 @@ export const ItemWrapper = styled.div`
                     } 
                     .desc-wrapper{
                         overflow: hidden;
-                        display: flex;
                         -webkit-box-align: center;
                         align-items: center;
                         margin-top: 8px;

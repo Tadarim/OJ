@@ -54,13 +54,11 @@ const MdEditor = memo((props) => {
   const [value, setValue] = useState('')
 
   const changeHandler = (value) => {
-    console.log(value)
     setValue(value)
   }
 
   const [title, setTitle] = useState("")
 
-  const topicRefs = []
   const [topic, setTopic] = useState("求职面试")
   const [showTopicList, setShowTopicList] = useState(false)
 
@@ -72,8 +70,6 @@ const MdEditor = memo((props) => {
     setTopic(ref.innerHTML)
   }
 
-  const tagsRef = []
-  const tagsEleRef = []
   const [tagsEleList, setTagsEleList] = useState([])
   const [showTagsList, setShowTagsList] = useState(false)
   const tagsClickHandler = () => {
@@ -135,8 +131,7 @@ const MdEditor = memo((props) => {
                     topicList.map((item, index) =>
                       <div className="list-item"
                         key={index}
-                        ref={(r) => { if (r) topicRefs.push(r) }}
-                        onClick={() => { topicChangeHandler(topicRefs[index]) }}
+                        onClick={() => { topicChangeHandler(item) }}
                       >{item}</div>
                     )
                   }
@@ -148,10 +143,9 @@ const MdEditor = memo((props) => {
                 <span
                   className='tagsItem'
                   key={index}
-                  ref={(r) => { if (r) tagsEleRef.push(r) }}
                 >
                   {item}
-                  <svg viewBox="0 0 24 24" width="1em" height="1em" onClick={() => { tagsChangeHandler(tagsEleRef[index].innerText) }}>
+                  <svg viewBox="0 0 24 24" width="1em" height="1em" onClick={() => { tagsChangeHandler(item) }}>
                     <path fillRule="evenodd" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
                     </path>
                   </svg>
@@ -175,8 +169,7 @@ const MdEditor = memo((props) => {
                       <div
                         className="list-item"
                         key={index}
-                        ref={(r) => { if (r) tagsRef.push(r) }}
-                        onClick={() => { tagsChangeHandler(tagsRef[index].innerHTML) }}
+                        onClick={() => { tagsChangeHandler(item) }}
                       >{item}</div>
                     )
                   }

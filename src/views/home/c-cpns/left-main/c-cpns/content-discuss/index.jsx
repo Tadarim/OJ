@@ -3,11 +3,11 @@ import { DiscussWrapper } from './styled'
 
 const ContentDiscuss = (props) => {
 
-  const { imgLink,imgSrc,avatarLink,avatarSrc,titleLink,title,time,content,contentLink,tags } = props
+  const { coverLink,imgSrc,avatarLink,avatarSrc,titleLink,title,time,content,contentLink,tags } = props
 
   return (
     <DiscussWrapper>
-        {imgLink && <a className="img-link" href={imgLink}>
+        {coverLink && <a className="img-link" href={coverLink}>
           <img src={imgSrc} alt="" />
         </a>}
         <div className="content">
@@ -39,7 +39,7 @@ const ContentDiscuss = (props) => {
             讨论
             </div>
             {tags.map((item,index)=> {
-              return <a className="text-tag" href={item.link} key={index} >{item.name}</a>
+              return <a className="text-tag" key={index} >{item}</a>
             })}
             
           </div>

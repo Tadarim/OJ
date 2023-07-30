@@ -1,20 +1,14 @@
 import React, { useState } from 'react'
 import { LoginWrapper } from './styled'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUserInfoAction } from '../../store/modules/login'
 import PasswordEle from './c-cpns/password-ele'
 import CaptchaEle from './c-cpns/captcha-ele'
+import { getLoginInfo } from '../../services'
 
 
 const Login = (props) => {
 
     const { showBtnClick } = props
-
-    const { token } = useSelector((state) => ({
-        token: state.login.token
-    }))
-
-    console.log(token)
 
     //登陆方式切换
     const [isCaptcha, setIsCaptcha] = useState(true)
@@ -25,9 +19,8 @@ const Login = (props) => {
         setIsCaptcha(!isCaptcha)
     }
 
-    const loginClickHandler = (email,code,login_type) =>{
-        console.log("fetch qian"+ email,code,login_type)
-        dispatch(fetchUserInfoAction({email,code,login_type}))
+    const loginClickHandler = (email, code, login_type) => {
+        getLoginInfo(email, code, login_type)
     }
 
     return (
@@ -35,15 +28,15 @@ const Login = (props) => {
             <div className="content-container">
                 <div className="main-container">
                     {
-                        isCaptcha 
-                        ? <CaptchaEle 
-                            modeChangeHandler={modeChangeHandler}
-                            loginHandler={loginClickHandler}
-                        /> 
-                        : <PasswordEle
-                            modeChangeHandler={modeChangeHandler}
-                            loginHandler={loginClickHandler}
-                        />
+                        isCaptcha
+                            ? <CaptchaEle
+                                modeChangeHandler={modeChangeHandler}
+                                loginHandler={loginClickHandler}
+                            />
+                            : <PasswordEle
+                                modeChangeHandler={modeChangeHandler}
+                                loginHandler={loginClickHandler}
+                            />
                     }
                 </div>
                 <div className="closeIcon" onClick={showBtnClick}>

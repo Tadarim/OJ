@@ -56,7 +56,6 @@ export const CircleWrapper = styled.div`
                 }
 
                 .desc-wrapper{
-                    display: flex;
                     flex-direction: column;
                     position: relative;
 

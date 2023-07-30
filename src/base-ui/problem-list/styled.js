@@ -1,10 +1,11 @@
 import { styled } from "styled-components";
 
 export const ProblemListWrapper = styled.div`
-            transition-duration: .15s;
-            transition-property: opacity;
-            transition-timing-function: cubic-bezier(.4,0,.2,1);
-            width: 100%;
+    transition-duration: .15s;
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    width: 100%;
+    background-color: #fff;
 
             .problemset-list{
                 border-spacing: 0;

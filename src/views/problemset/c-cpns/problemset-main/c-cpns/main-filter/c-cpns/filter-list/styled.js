@@ -20,10 +20,19 @@ export const FilterListWrapper = styled.div`
 
         .list-item{
             height: 2rem;
+            display: flex;
+            align-items: center;
             position: relative;
             cursor: pointer;
             color: rgb(38,38,38);
             padding: 0.375rem 3rem 0.375rem .5rem ;
+
+
+            &.active {
+                .selected-icon{
+                    opacity: 1 !important;
+                }
+            }
 
             .option-container{
                 height: 1.25rem;
@@ -34,6 +43,23 @@ export const FilterListWrapper = styled.div`
                     text-overflow: ellipsis;
                     overflow: hidden;
                     white-space: nowrap;
+                }
+            }
+
+            .selected-icon{
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                display: flex;
+                align-items: center;
+                color :rgb(0,122,255);
+                padding-right: .5rem;
+
+                svg{
+                    width: 1.25rem;
+                    height: 1.25rem;
                 }
             }
         }

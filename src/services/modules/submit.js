@@ -13,3 +13,19 @@ export function codeSubmit(problem_id,language,code){
         }
     )
 }
+
+export function getSubmitList(){
+    return XYRequest.get(
+        {
+            url:'/submit/list'
+        }
+    )
+}
+
+export function getSubmitRecord(){
+    return XYRequest.get(
+        {
+            url:'/submit/get/one'
+        }
+    )
+}

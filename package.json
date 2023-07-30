@@ -91,7 +91,7 @@
   "scripts": {
     "start": "concurrently \"npm run dev\" \"npm run mock\"",
     "dev": "set REACT_APP_API_URL=http://localhost:10001/api && node scripts/start.js",
-    "deploy": "set REACT_APP_API_URL=http://192.168.50.28:9090 && node scripts/start.js",
+    "deploy": "set REACT_APP_API_URL=http://192.168.105.28:9090 && node scripts/start.js",
     "build": "node scripts/build.js --dev=deploy",
     "test": "node scripts/test.js",
     "mock": "nodemon mock/bin/index.js --watch mock"

@@ -17,7 +17,12 @@ export const RankingItemWrapper = styled.div`
         font-family: TypoRound;
         font-style: italic;
         font-weight: 700;
-        color: rgba(255,161,22, 1);
+       
+        color: rgba(60,60,67,0.3);
+
+        &.light{
+            color: rgba(255,161,22, 1);
+        }
     }
 
     .contentContainer{

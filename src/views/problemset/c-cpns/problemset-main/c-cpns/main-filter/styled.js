@@ -161,5 +161,74 @@ export const MainFilterWrapper = styled.div`
                 }
             }
         }
-    }
+
+       
+    } 
+    .search-tags-wrapper{
+            display: flex;
+            flex-wrap: nowrap;
+            margin-top: 0.75rem;
+            justify-content: space-between;
+
+            .search-tags-item-wrapper{
+                display: flex;
+                flex-wrap: wrap;
+                margin-left: -.25rem;
+                margin-right: -.25rem;
+
+                .search-tags-item{
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 3px 0.5rem;
+                    margin: 0.25rem;
+                    font-size: .75rem;
+                    background-color: #000a200d;
+                    border-radius: 5px;
+                    white-space: nowrap;
+                    color: rgb(38,38,38);
+                    line-height: 1.5;
+
+                    .item-text-wrapper{
+                        .item-text{
+                            color: rgb(38,38,38)
+                        }
+                    }
+
+                    .item-remove{
+                        transition-duration: .15s;
+                        transition-property: all;
+                        transition-timing-function: cubic-bezier(.4,0,.2,1);
+                        cursor: pointer;
+
+                        svg{
+                            color: #3c3c434d;
+                            width: 0.875rem;
+                            height: 0.875rem;
+                            margin-left: 0 !important;
+                        }
+                    }
+                }
+            }
+
+            .restart-wrapper{
+                display: flex;
+                align-items: center;
+                align-self: flex-end;
+                outline: 2px solid #0000;
+                outline-offset: 2px;
+                color: #3c3c4399;
+                line-height: 20px;
+                white-space: nowrap;
+                margin-bottom: .375rem;
+
+                svg{
+                    width: 1rem;
+                    height: 1rem;
+                }
+
+                span{
+                    margin: 0 0.25rem;
+                }
+            }
+        }
 `

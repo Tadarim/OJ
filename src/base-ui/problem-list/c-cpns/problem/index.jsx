@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import classNames from 'classnames'
 
 import { ProblemWrapper } from './styled'
-
+import {changeDifficulty} from '../../../../utils/changeDifficulty'
 
 const Problem = memo((props) => {
 
@@ -22,7 +22,7 @@ const Problem = memo((props) => {
       <div className="main-item-solution margin">
         <div className="solution-container">
           <div className="solution">
-            {problem.accessPercent}
+            {problem.access_percent}
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@ const Problem = memo((props) => {
               "middle-text": problem.difficulty === '中等', 
               "hard-text": problem.difficulty === '困难' 
             })}>
-            {problem.difficulty}
+            {changeDifficulty(problem.difficulty) }
           </span>
         </div>
       </div>

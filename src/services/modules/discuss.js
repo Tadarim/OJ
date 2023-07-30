@@ -1,11 +1,13 @@
 import XYRequest from '..'
 
-export function getDiscussList(page) {
+//默认最新 1为最热
+export function getDiscussList(page,type) {
     return XYRequest.get({
         url:'/discuss/list',
         params:{
             page,
-            page_size:20
+            page_size:10,
+            type
         }
     })
 }
@@ -16,50 +18,74 @@ export function getDiscussEveryList() {
     })
 }
 
-export function getReplyList(page) {
+export function getDiscussDetail(did){
     return XYRequest.get({
-        url:'/comment/list',
+        url:'/discuss/get',
         params:{
-            page,
-            page_size:10
+            did
         }
     })
 }
 
-export function getRepliesList(page) {
-    return XYRequest.get({
-        url:'/comment/second/list',
-        params:{
-            page,
-            page_size:10
-        }
-    })
-}
+// export function getCommentList(page,type,operator_id) {
+//     return XYRequest.get({
+//         url:'/comment/list',
+//         params:{
+//             page,
+//             page_size:10,
+//             type,
+//             operator_id
+//         }
+//     })
+// }
 
-export function searchDiscuss(){
+export function searchDiscuss(key_word,page,type){
     return XYRequest.post({
         url:'/discuss/search',
         data:{
-
+            key_word,
+            page,
+            page_size:10,
+            type: parseInt(type)
         }
     })
 }
 
-export function PublishDiscuss(){
+// export function getReplyList(type,root_comment_id,operator_id,page) {
+//     return XYRequest.post({
+//         url:'/comment/second/list',
+//         data:{
+//             type,
+//             root_comment_id,
+//             operator_id,
+//             page,
+//             page_size:10
+//         }
+//     })
+// }
+
+
+export function PublishDiscuss(title,content,tags,cover_url,short_content){
     return XYRequest.post({
         url:'/discuss/add',
         data:{
-
+            title,
+            content,
+            tags,
+            cover_url,
+            short_content
         }
     })
 }
 
-export function DeleteDiscuss(){
-    return XYRequest.post({
-        url:'/discuss/remove',
-        data:{
-
-        }
-    })
-}
+// export function DiscussLike(operator_id,is_like){
+//     return XYRequest.post({
+//         url:'/inter_action/like',
+//         data:{
+//             type:1, 
+//             operator_id,
+//             is_like //1 点赞 -1取消
+//         }
+//     })
+// }
 

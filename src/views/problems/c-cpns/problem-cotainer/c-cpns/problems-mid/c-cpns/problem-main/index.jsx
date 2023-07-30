@@ -1,17 +1,35 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
+import { useSelector, shallowEqual } from 'react-redux'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import classNames from 'classnames'
 
 import { MainWrapper } from './styled'
+import { useParams } from 'react-router-dom'
+import { getProblemById } from '../../../../../../../../services/modules/problem'
 
-const ProblemMain = memo((props) => {
+const ProblemMain = memo(() => {
 
-  const { problemInfo } = props
+  const {pid} = useParams()
+  
+  // const [problemInfo,setProblemInfo] = useState('')
+
+  // useEffect(()=>{
+  //   getProblemById(pid).then(res => {
+  //     setProblemInfo(res.data)
+  //   })
+  // },[[pid]])
+
+  const {problemInfo} = useSelector((state)=>(
+    {
+      problemInfo:state.problem.problemInfo
+    }
+  ),shallowEqual)
+
 
   const difficulty = new Map([
     [1, '简单'],
     [2, '中等'],
-    [3, '困难'],
+    [3, '困难']
   ])
 
   return (

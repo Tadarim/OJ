@@ -1,47 +1,92 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MainFilterWrapper } from './styled'
 import classNames from 'classnames'
 import TagsList from './c-cpns/tagsList'
 import ButtonItem from './c-cpns/button-item'
 import FilterList from './c-cpns/filter-list'
 
-const MainFilter = () => {
+const MainFilter = (props) => {
 
-    const [listOpen,setListOpen] = useState(false)
+    const { searchHandler, fetchRandomProblem } = props
 
-    const [allOpen,setAllOpen] = useState(false)
-
-    const filterList1 = ['Shopee Code League 真题精选','SQL','二分查找','剑指Offer','图论','数据结构','算法','动态规划']
-    const filterList2 = ['简单','中等','困难']
-
+    const [listOpen, setListOpen] = useState(false)
+    const [allOpen, setAllOpen] = useState(false)
+    const filterList = ['简单', '中等', '困难']
+    const [value, setValue] = useState('')
+    const [tagsEleList, setTagsEleList] = useState([])
 
     const allOpenClickHandler = () => {
         setAllOpen(!allOpen)
     }
-
-    const listOpenClickHandler = (index) =>{
-        listOpen === index ?setListOpen(false) : setListOpen(index)
+    const listOpenClickHandler = (index) => {
+        listOpen === index ? setListOpen(false) : setListOpen(index)
     }
+
+    const inputKeyBoardHandler = (event) => {
+        if (event.keyCode === 13) {
+            searchHandler(value)
+        }
+    }
+    const inputChangeHandler = (e) => {
+        setValue(e.target.value)
+        if (e.target.value === '') {
+            searchHandler('')
+        }
+    }
+
+    const tagsChangeHandler = (tag) => {
+        const newList = [...tagsEleList]
+        newList.includes(tag)
+            ?
+            newList.splice(newList.findIndex(filterItem => filterItem === tag), 1)
+            :
+            newList.push(tag)
+        setTagsEleList(newList)
+    }
+
+    const difficultyChangeHandler = (difficulty) => {
+        if(difficulty !== ''){
+            searchHandler(difficulty, 3)
+        }else{
+            searchHandler('')
+        }
+    }
+
+    useEffect(() => {
+        searchHandler(tagsEleList.join(' '), 2)
+    }, [tagsEleList])
+
 
     return (
         <MainFilterWrapper>
             <div className="main-filter">
-                <div className={classNames("item-container",{active: listOpen === 0})}>
-                    <ButtonItem desc='题单' index={0} clickHandler={listOpenClickHandler}></ButtonItem>
-                    <FilterList filterList={filterList1}> </FilterList>
+                <div className={classNames("item-container", { active: listOpen === 1 })}>
+                    <ButtonItem
+                        desc='难度'
+                        index={1}
+                        clickHandler={listOpenClickHandler}
+                    />
+                    <FilterList
+                        itemClickHandler={difficultyChangeHandler}
+                        filterList={filterList}
+                        listOpenClickHandler={listOpenClickHandler}
+                    />
                 </div>
-                <div className={classNames("item-container",{active: listOpen === 1})}>
-                    <ButtonItem desc='难度' index={1} clickHandler={listOpenClickHandler}></ButtonItem>
-                    <FilterList filterList={filterList2}> </FilterList>
-                </div>
-                <div className={classNames("item-container",{active: listOpen === 2})}>
-                    <ButtonItem desc='标签' index={2} clickHandler={listOpenClickHandler}></ButtonItem>
+                <div className={classNames("item-container", { active: listOpen === 2 })}>
+                    <ButtonItem
+                        desc='标签'
+                        index={2}
+                        clickHandler={listOpenClickHandler}
+                    />
                     <div className="tags-list-container">
                         <div className='tags-list'>
-                            <TagsList allOpen={allOpen}></TagsList>
+                            <TagsList
+                                allOpen={allOpen}
+                                tagsChangeHandler={tagsChangeHandler}
+                            />
                             <div className="btns-container">
                                 <div className="left-btn" onClick={allOpenClickHandler}>
-                                   {allOpen ? "收起全部" : "展开全部" }
+                                    {allOpen ? "收起全部" : "展开全部"}
                                 </div>
                             </div>
                         </div>
@@ -55,9 +100,15 @@ const MainFilter = () => {
                                 </path>
                             </svg>
                         </div>
-                        <input type="text" placeholder='搜索题目、编号或内容' />
+                        <input
+                            type="text"
+                            placeholder='搜索题目、编号或内容'
+                            value={value}
+                            onChange={inputChangeHandler}
+                            onKeyDown={inputKeyBoardHandler}
+                        />
                     </div>
-                    <div className="btn">
+                    <div className="btn" onClick={fetchRandomProblem}>
                         <span className='svg'>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
                                 <path fillRule="evenodd" d="M18.48 17.5h-2.204a5 5 0 01-4.31-2.466l-.625-1.061-.624 1.061a5 5 0 01-4.31 2.466H2.661a1 1 0 110-2h3.746a3 3 0 002.586-1.48L10.181 12 8.993 9.98A3 3 0 006.407 8.5H2.661a1 1 0 110-2h3.746a5 5 0 014.31 2.466l.624 1.061.624-1.061a5 5 0 014.31-2.466h2.205V4.315a.5.5 0 01.874-.332l2.536 2.853a1 1 0 010 1.328l-2.536 2.853a.5.5 0 01-.874-.332V8.5h-2.204a3 3 0 00-2.587 1.48L12.501 12l1.188 2.02a3 3 0 002.587 1.48h2.204v-2.185a.5.5 0 01.874-.332l2.83 3.185a.5.5 0 010 .664l-2.83 3.185a.5.5 0 01-.874-.332V17.5z" clipRule="evenodd">
@@ -68,6 +119,27 @@ const MainFilter = () => {
                     </div>
                 </div>
             </div>
+            {
+                tagsEleList.length > 0 &&
+                <div className="search-tags-wrapper">
+                    <div className="search-tags-item-wrapper" >
+                        {
+                            tagsEleList.map((item, index) =>
+                                <span className="search-tags-item" key={index} >
+                                    <span className="item-text-wrapper">
+                                        <span className="item-text">{item}</span>
+                                    </span>
+                                    <span className="item-remove" onClick={() => { tagsChangeHandler(item) }}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
+                                            <path fillRule="evenodd" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm1.414-10l2.293-2.293a1 1 0 00-1.414-1.414L12 10.586 9.707 8.293a1 1 0 00-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 101.414 1.414L12 13.414l2.293 2.293a1 1 0 001.414-1.414L13.414 12z" clipRule="evenodd"></path>
+                                        </svg>
+                                    </span>
+                                </span>
+                            )
+                        }
+                    </div>
+                </div>
+            }
         </MainFilterWrapper>
     )
 }

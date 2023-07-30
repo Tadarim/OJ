@@ -1,22 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+
 import { HomeWrapper } from './style'
 import SearchBar from './c-cpns/SearchBar'
 import Swipper from './c-cpns/Swipper'
 import Hot from '../../base-ui/Hot'
 import LeftMain from './c-cpns/left-main'
 import LeftHeader from './c-cpns/left-header'
-import { useDispatch } from 'react-redux'
-import { fetchProblemsetAction } from '../../store/modules/problemset'
-import MdEditor from '../../components/mdEditor'
+import { getDiscussEveryList, getDiscussList } from '../../services/modules/home'
 
 
 const Home = () => {
-
-  const dispatch = useDispatch()
-  useEffect(() => {
-    console.log(1)
-    dispatch(fetchProblemsetAction())
-  }, [dispatch])
 
   const swipperData = [
     {
@@ -37,36 +30,24 @@ const Home = () => {
     },
   ]
 
-  const hotDiscussContent = [
-    {
-      avatar: 'https://assets.leetcode.cn/aliyun-lc-upload/users/krean/avatar_1681219355.png?x-oss-process=image%2Fresize%2Ch_44%2Cw_44%2Fformat%2Cwebp',
-      link: "/circle/discuss/hnuZWf/",
-      title: '分享｜一只Gopher跌跌撞撞的Coding之旅',
-      desc: '今天早上，在等coffee的时候，接到了一通来自北京的电话，八位的，前面还带有一个括号，直觉告诉我这很可能是一个广告，按照以往我的习惯，我会直接挂掉。然而，阴差阳错的，我感觉等待的时候接一个电话，或许是孤独的解方。于是，我接起了。ta的开场白很客气：“你好，请问是**（我的名字）同学吗？”我突然意识到什么，心里浮起了',
-      isNew: true
-    },
-    {
-      avatar: 'https://assets.leetcode.cn/aliyun-lc-upload/default_avatar.png?x-oss-process=image%2Fresize%2Ch_44%2Cw_44%2Fformat%2Cwebp',
-      link: "/circle/discuss/dSrpPn/",
-      desc: "前天遇到一家笔试题，问1-100之间缺少了一个数，如何快速找到这个数。我当时一想就用数学求和计算了一下。结果面试官讲这个不是他想要的，他想要二分法来找。这种题到底该怎么回答。",
-      title: '求助｜笔试题分析',
-      isNew: false
-    },
-  ]
-  const hotAnswerContent = [
-    {
-      link: "/problems/apply-operations-to-an-array/solution/dui-shu-zu-zhi-xing-cao-zuo-by-leetcode-vz70b/",
-      title: '对数组执行操作',
-      desc: '对数组执行操作 · 力扣官方题解',
-      isNew: false
-    },
-    {
-      link: "/problems/sum-of-matrix-after-queries/solution/dao-xu-cao-zuo-jian-ji-xie-fa-pythonjava-7rqh/",
-      desc: "查询后矩阵的和 · 灵茶山艾府",
-      title: '倒序操作+简洁写法！（Python/Java/C++/Go）',
-      isNew: true
-    },
-  ]
+  const [discussList, setDiscussList] = useState([])
+  const [discussEveryList, setDiscussEveryList] = useState([])
+  const [page, setPage] = useState(1)
+
+  const loadMoreHandler = () => {
+    setPage(page+1)
+  }
+
+  useEffect(() => {
+    getDiscussList(page).then(res => {
+      setDiscussList(res.data?.list)
+    })
+
+    getDiscussEveryList().then(res => {
+      console.log(res)
+      setDiscussEveryList(res.data?.days_discuss)
+    })
+  }, [page])
 
   return (
     <HomeWrapper>
@@ -74,8 +55,8 @@ const Home = () => {
         <div className="container">
           <div className="content-left">
             <LeftHeader />
-            <LeftMain></LeftMain>
-            <button className="loadMoreButton">
+            <LeftMain discussList={discussList}></LeftMain>
+            <button className="loadMoreButton" onClick={loadMoreHandler}> 
               <span>加载更多</span>
             </button>
           </div>
@@ -84,11 +65,11 @@ const Home = () => {
             <Swipper swipperImg={swipperData} />
             <Hot
               title='热门讨论'
-              content={hotDiscussContent}
+              content={discussEveryList}
             />
             <Hot
               title='热门题解'
-              content={hotAnswerContent}
+              content={discussEveryList}
             />
           </div>
         </div>

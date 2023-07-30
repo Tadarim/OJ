@@ -1,77 +1,75 @@
 import React, { memo, useEffect, useState } from 'react'
 import { ProblemsWrapper } from './styled'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ProblemContainer from './c-cpns/problem-cotainer'
 import CodeArea from './c-cpns/codeArea'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { fetchProblemAction } from '../../store/modules/problem'
+import { changeUseMdAction, fetchProblemAction } from '../../store/modules/problem'
 import { codeSubmit } from '../../services/modules/submit'
 import MdEditor from '../../components/mdEditor'
+import { getRandProblem } from '../../services/modules/problemset'
 
 const Problems = memo(() => {
 
-  const [tabSelect, setTabSelect] = useState(0)
-
-  const {problemInfo,codeTemplate,codeLang} = useSelector((state)=>(
-    {
-    problemInfo:state.problem.problemInfo,
-    codeTemplate:state.problem.codeTemplate,
-    codeLang:state.problem.codeLang
-    }
-  ),shallowEqual)
-
-  const tabClickHandler = (index) => {
-    setTabSelect(index)
-  }
-
-  const {pid} = useParams()
-
-  const [showResult,setShowResult] = useState(false)
-
-  const submitHandler = (lang,code) => {
-    codeSubmit(pid,lang,code)
-    setShowResult(true)
-    setTabSelect(3)
-  }
-
   const dispatch = useDispatch()
+  const { pid } = useParams()
+  const navigate = useNavigate()
 
-  // useEffect(()=>{
-  //   dispatch(fetchProblemAction(pid))
-  // },[dispatch,pid])
+  const { problemInfo, codeTemplate, codeLang, useMd } = useSelector((state) => (
+    {
+      problemInfo: state.problem.problemInfo,
+      codeTemplate: state.problem.codeTemplate,
+      codeLang: state.problem.codeLang,
+      useMd: state.problem.useMd
+    }
+  ), shallowEqual)
 
-  const [useMd,setUseMd] = useState(false) 
+  const [showResult, setShowResult] = useState(false)
+
+  const submitHandler = (lang, code) => {
+    codeSubmit(pid, lang, code)
+    setShowResult(true)
+    // setTabSelect(3)
+  }
+
+  const fetchRandomProblem = async () => {
+    const res = await getRandProblem()
+    navigate(`/problems/${res.data?.id}`)
+  }
 
   const modeChangeHandler = () => {
-    setUseMd(!useMd)
+    dispatch(changeUseMdAction(!useMd))
   }
+  // useEffect(()=>{
+  //   dispatch(fetchProblemAction(pid))
+  // },[pid])
 
   return (
     <ProblemsWrapper>
       <div className="problems">
-        <ProblemContainer 
-          tabSelect={tabSelect} 
-          tabClickHandler={tabClickHandler} 
-          problemInfo={problemInfo} 
-          codeTemplate={codeTemplate} 
-          codeLang={codeLang} 
-          showResult={showResult} 
-          useMd={useMd}
-          modeChangeHandler={modeChangeHandler}
+        <ProblemContainer
+          pid={pid}
+          fetchRandomProblem={fetchRandomProblem}
+          problemInfo={problemInfo}
+          codeTemplate={codeTemplate}
+          codeLang={codeLang}
+          showResult={showResult}
         />
         <div className="middle-area"></div>
-       { useMd ?
-        <MdEditor
-          mode='solution'
-          btnText=''
-          cancelHandler={modeChangeHandler}
-        />
-        :
-        <CodeArea
-          submitHandler={submitHandler} 
-          codeTemplate={codeTemplate} 
-          codeLang={codeLang} 
-        />
+        {
+          useMd
+            ?
+            <MdEditor
+              mode='solution'
+              btnText='发布题解'
+              cancelHandler={modeChangeHandler}
+            />
+            :
+            <CodeArea
+              submitHandler={submitHandler}
+              codeTemplate={codeTemplate}
+              codeLang={codeLang}
+            />
         }
       </div>
     </ProblemsWrapper>

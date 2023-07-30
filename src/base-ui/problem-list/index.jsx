@@ -4,29 +4,7 @@ import Problem from './c-cpns/problem'
 
 const ProblemList = memo((props) => {
 
-    const problemList = [
-        {
-            id:1,
-            link:'/problems/minimum-cuts-to-divide-a-circle/',
-            title:'2481. 分割圆的最少切割次数',
-            difficulty:'困难',
-            accessPercent:'52.9%'
-        },
-        {
-            id:2,
-            link:'/problems/minimum-cuts-to-divide-a-circle/',
-            title:'1. 两数之和',
-            difficulty:'简单',
-            accessPercent:'52.9%'
-        },
-        {
-            id:3,
-            link:'/problems/minimum-cuts-to-divide-a-circle/',
-            title:'2. 两数相加',
-            difficulty:'中等',
-            accessPercent:'52.9%'
-        },
-    ]
+    const {list } = props
 
     return (
         <ProblemListWrapper>
@@ -59,14 +37,13 @@ const ProblemList = memo((props) => {
                     </div>
                 </div>
                 <div className="list-main">
-
-                        {
-                            problemList.map((item,index) => 
-                                <Problem key={index} problem={item}/>
-                            )
-                        }
-                    </div>
+                    {
+                    list?.map((item, index) =>
+                        <Problem key={index} problem={item} />
+                    )
+                    }
                 </div>
+            </div>
         </ProblemListWrapper>
     )
 })

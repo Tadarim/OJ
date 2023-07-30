@@ -1,5 +1,6 @@
 import React from 'react'
 import { RankingItemWrapper } from './styled'
+import classNames from 'classnames'
 
 const RankingItem = (props) => {
 
@@ -7,7 +8,7 @@ const RankingItem = (props) => {
 
   return (
     <RankingItemWrapper>
-        <div className="number">
+        <div className={classNames('number',{light:num <= 3})}>
             {num}
         </div>
         <a href={link} className='contentContainer'>

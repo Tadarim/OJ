@@ -1,32 +1,62 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { ProblemsetWrapper } from './styled'
 
-import FilterV1 from './c-cpns/problemset-filter-v1'
-import FilterV2 from './c-cpns/problemset-filter-v2'
+import Filter from './c-cpns/problemset-filter'
 import ProblemsetMain from './c-cpns/problemset-main'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { fetchProblemsetAction } from '../../store/modules/problemset'
+import { getAllProblemset, getRandProblem } from '../../services/modules/problemset'
+import { searchProblem } from '../../services/modules/problemset'
+import { useNavigate } from 'react-router-dom'
 
 const Problemset = () => {
 
-    const dispatch = useDispatch()
+    const [problemsetList, setProblemsetList] = useState([])
+    const [problemsetTotal, setProblemsetTotal] = useState()
+
+    const [page, setPage] = useState(1)
+    const pageChangeHandler = (newPage) => {
+        setPage(newPage)
+    }
+    const navigate = useNavigate()
+
+    //请求
+    const fetchProblemsetList = async (page) => {
+        const res = await getAllProblemset(page)
+        setProblemsetList(res.data?.list)
+        setProblemsetTotal(res.data?.total)
+    }
+    const fetchSearchResultList = async (key_word, page, type) => {
+        const res = await searchProblem(key_word, page, type)
+        setProblemsetList(res.data?.list)
+        setProblemsetTotal(res.data?.total)
+    }
+    const fetchRandomProblem = async () => {
+        const res = await getRandProblem()
+        navigate(`/problems/${res.data?.id}`)
+    }
+
+    const searchHandler = (key_word, type) => {
+        (key_word !== '全部题目') && (key_word !== '')
+            ?
+            fetchSearchResultList(key_word, page, type)
+            :
+            fetchProblemsetList(page)
+    }
 
     useEffect(() => {
-        dispatch(fetchProblemsetAction())
-    }, [dispatch])
-
-    const { problemsetList } = useSelector((state) => (
-        {
-            problemsetList: state.problemset.problemsetList
-        }
-    ), shallowEqual)
+        fetchProblemsetList(page)
+    }, [page])
 
     return (
         <ProblemsetWrapper>
-            <FilterV1></FilterV1>
-            <FilterV2></FilterV2>
-            <ProblemsetMain problemsetList={problemsetList}></ProblemsetMain>
+            <Filter searchHandler={searchHandler} />
+            <ProblemsetMain
+                list={problemsetList}
+                searchHandler={searchHandler}
+                pageChangeHandler={pageChangeHandler}
+                problemsetTotal={problemsetTotal}
+                fetchRandomProblem={fetchRandomProblem}
+            />
         </ProblemsetWrapper>
     )
 }

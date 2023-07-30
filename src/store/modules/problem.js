@@ -53,7 +53,8 @@ const problemSlice = createSlice({
                 "template": "function addTwoNum(a, b) {\n \n}"
             }
         ],
-        codeLang:'C'
+        codeLang:'C',
+        useMd: false
     },
     reducers:{
         changeProblemInfoAction(state,{payload}){
@@ -64,6 +65,9 @@ const problemSlice = createSlice({
         },
         changeCodeLangAction(state,{payload}){
             state.codeLang = payload
+        },
+        changeUseMdAction(state,{payload}){
+            state.useMd = payload
         }
     }
 })
@@ -71,6 +75,7 @@ const problemSlice = createSlice({
 export const {
     changeProblemInfoAction,
     changeCodeTemplateAction,
-    changeCodeLangAction
+    changeCodeLangAction,
+    changeUseMdAction
 } = problemSlice.actions
 export default problemSlice.reducer

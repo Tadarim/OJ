@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const FilterV2Wrapper = styled.div`
+export const FilterWrapper = styled.div`
 
         margin: 1rem 0 ;
         

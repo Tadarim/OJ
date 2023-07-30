@@ -7,21 +7,26 @@ import classNames from 'classnames';
 
 import { CodeAreaWrapper } from './styled'
 import { changeCodeLangAction } from '../../../../store/modules/problem';
-import { useDispatch } from 'react-redux';
-import { test } from '../../../../services/modules/test';
+import { useDispatch, useSelector } from 'react-redux';
 
 import 'react-quill/dist/quill.snow.css';
 
 
-const CodeArea = memo((props) => {
+const CodeArea = memo(() => {
 
-    const { codeTemplate, submitHandler } = props
+    const {codeTemplate} = useSelector((state) => ({
+        codeTemplate: state.problem.codeTemplate
+    }))
 
     const [codeLang, setCodeLang] = useState('C')
 
-    let [template] = codeTemplate.filter((item) => {
+    let [template] = codeTemplate?.filter((item) => {
         return item.language === codeLang
     })
+
+    const submitHandler = () =>{
+
+    }
 
     const [doc, setDoc] = useState(template?.template);
 
@@ -30,12 +35,11 @@ const CodeArea = memo((props) => {
     }, [template?.template])
 
     const [showList, setShowList] = useState(false)
-    const refs = []
     const langList = ['C', 'Golang', 'JavaScript']
     const dispatch = useDispatch()
-    const langItemClickHandler = (ref) => {
-        dispatch(changeCodeLangAction(ref.innerHTML))
-        setCodeLang(ref.innerHTML)
+    const langItemClickHandler = (lang) => {
+        dispatch(changeCodeLangAction(lang))
+        setCodeLang(lang)
         setShowList(false)
     }
     const langSelectHandler = () => {
@@ -64,8 +68,7 @@ const CodeArea = memo((props) => {
                                     {langList.map((item, index) => {
                                         return <div
                                             key={index}
-                                            ref={(r) => { if (r) refs.push(r) }}
-                                            onClick={() => { langItemClickHandler(refs[index]) }}
+                                            onClick={() => { langItemClickHandler(item) }}
                                         >{item}</div>
                                     })}
                                 </div>

@@ -32,7 +32,7 @@ export const BottomWrapper = styled.div`
                         .picker-handlers{
                             display: flex;
                             -webkit-box-pack: end;
-                            justify-content: flex-end;
+                            justify-content: space-around;
                             -webkit-box-flex: 1;
                             flex-grow: 1;
                             min-width: 0;

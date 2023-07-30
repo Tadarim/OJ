@@ -2,15 +2,26 @@ import React, { memo } from 'react'
 
 import { MainWrapper } from './styled'
 import MainFilter from './c-cpns/main-filter'
-import ProblemsetPagination from './c-cpns/problemset-pagination'
-import ProblemList from './c-cpns/problem-list'
+import ProblemList from '../../../../base-ui/problem-list'
+import Paginations from '../../../../base-ui/pagination'
 
-const ProblemsetMain = memo(() => {
+const ProblemsetMain = memo((props) => {
+
+  const { list, searchHandler, pageChangeHandler, problemsetTotal, fetchRandomProblem } = props
+
   return (
     <MainWrapper>
-        <MainFilter></MainFilter>
-        <ProblemList></ProblemList>
-        <ProblemsetPagination></ProblemsetPagination>
+      <MainFilter
+        searchHandler={searchHandler}
+        fetchRandomProblem={fetchRandomProblem}
+      />
+      <ProblemList
+        list={list}
+      />
+      <Paginations
+        pageChangeHandler={pageChangeHandler}
+        total={problemsetTotal}
+      />
     </MainWrapper>
   )
 })

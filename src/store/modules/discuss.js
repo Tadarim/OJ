@@ -1,13 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-
-
 const discussSlice = createSlice({
     name:'discuss',
     initialState:{
-        discussList:{
-
-        }
+        discussList:[],
+        everyList:[],
     },
     reducers:{
         changeDiscussListAction(state,{payload}){
@@ -15,3 +12,7 @@ const discussSlice = createSlice({
         }
     }
 })
+
+export const {changeDiscussListAction} = discussSlice.actions
+
+export default discussSlice.reducer

@@ -1,14 +1,20 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { EditorWrapper } from './styled'
 
 const CommentsEditor = memo((props) => {
 
     const {cancel,cancelHandler} = props
+    
+    const [value,setValue] = useState("")
 
     return (
         <EditorWrapper>
             <div className="editor">
-                <textarea className='textarea'></textarea>
+                <textarea 
+                    className='textarea'
+                    value={value}    
+                    onChange={(e)=>{setValue(e.target.value)}}
+                />
                 <div className="tool-bar">
                     <button className='comment'>
                         <span>评论</span>

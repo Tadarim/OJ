@@ -36,29 +36,27 @@ const tagsList = [
 
 const TagsList = memo((props) => {
 
-    const {allOpen} = props
-
-    const [tagsSelect,setTagsSelect] = useState([])
-
-    const tagsSelectClickHandler = (item) =>{
-        const newList = [...tagsSelect];
-        newList.includes(item) ? newList.splice(newList.findIndex((itemSelect) => itemSelect === item),1) : newList.push(item)
-        setTagsSelect(newList)
-    }
-    
+    const { allOpen, tagsChangeHandler } = props
     const [tagsOpen, setTagsOpen] = useState([])
-    
+    const [tagsSelect, setTagsSelect] = useState([])
+
+    const tagsSelectClickHandler = (item) => {
+        const newList = [...tagsSelect];
+        newList.includes(item) ? newList.splice(newList.findIndex((itemSelect) => itemSelect === item), 1) : newList.push(item)
+        setTagsSelect(newList)
+        tagsChangeHandler(item)
+    }
+
     const tagsOpenClickHandler = (index) => {
         const newList = [...tagsOpen];
-        newList.includes(index) ? newList.splice(newList.findIndex((item) => item === index),1) : newList.push(index)
+        newList.includes(index) ? newList.splice(newList.findIndex((item) => item === index), 1) : newList.push(index)
         setTagsOpen(newList)
     }
-
 
     return (<TagsListWrapper>
         {
             tagsList.map((item, index) =>
-                <div className={classNames("tags-item", { active: tagsOpen.includes(index) || allOpen})} key={index}>
+                <div className={classNames("tags-item", { active: tagsOpen.includes(index) || allOpen })} key={index}>
                     <div className="item-title">
                         <span className="title-text">
                             {item.titleText}
@@ -73,7 +71,10 @@ const TagsList = memo((props) => {
                     <div className={"item-main"}>
                         {
                             item.tags.map((item, index) =>
-                                <div className={classNames("tags",{active: tagsSelect.includes(item)})} key={index} onClick={() => {tagsSelectClickHandler(item)}} >{item}</div>
+                                <div className={classNames("tags", { active: tagsSelect.includes(item) })}
+                                    key={index}
+                                    onClick={() => { tagsSelectClickHandler(item) }}
+                                >{item}</div>
                             )
                         }
                     </div>
