@@ -1,13 +1,25 @@
 import XYRequest from '..'
 
-export function getLoginInfo(email,code,login_type){
+export function getLoginInfoByCode(email,email_code){
     return XYRequest.post(
        { 
             url:"/user/login",
             data:{
                 email,
-                code,
-                login_type
+                email_code,
+                login_type:parseInt(2)
+            }
+        }
+    )
+}
+export function getLoginInfoByPw(email,password){
+    return XYRequest.post(
+       { 
+            url:"/user/login",
+            data:{
+                email,
+                password,
+                login_type:parseInt(1)
             }
         }
     )
@@ -24,3 +36,4 @@ export function getCaptcha(email){
         }
     )
 }
+

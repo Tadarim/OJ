@@ -1,8 +1,9 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { Table } from 'antd'
 
 import { SubmissionsWrapper } from './styled'
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { getSubmitRecord } from '../../../../services/modules/submit';
 
 const dataSource = [
     {
@@ -54,6 +55,19 @@ const columns = [
 const Submission = memo((props) => {
 
     const { showResult } = props
+    const [recordList,setRecordList] = useState([])
+    const [recordTotal,setRecordTotal] = useState('')
+
+    const location = useLocation()
+    console.log(location.state.res)
+
+    const fetchSubmitHandler = async() => {
+        const res = await getSubmitRecord()
+    }
+
+    useEffect(()=>{
+        
+    },[])
 
     return (
         <SubmissionsWrapper>
@@ -96,7 +110,7 @@ at node:internal/main/run_main_module:17:47`}
                         </div>
                     }
                     <div className='table-container'>
-                        <Table dataSource={dataSource} columns={columns} pagination={false} />
+                        <Table dataSource={dataSource} columns={columns} pagination={{defaultCurrent:1,total:50,position:["bottomCenter"],showSizeChanger:false}} />
                     </div>
                 </div>
             </div>

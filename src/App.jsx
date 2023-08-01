@@ -7,6 +7,7 @@ import Backdrop from './base-ui/backdrop'
 import Login from './components/login'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeShowLoginAction } from './store/modules/login'
+import { RouterGurad } from './router/RouterGurad'
 
 const App = () => {
 
@@ -16,7 +17,6 @@ const App = () => {
     showLogin: state.login.showLogin
   }))
  
-
   const showChangeHandler = () => {
     dispatch(changeShowLoginAction())
   }
@@ -24,6 +24,7 @@ const App = () => {
   return (
     <div className='app'>
       <AppHeader></AppHeader>
+        {/* {RouterGurad(routes)} */}
         {useRoutes(routes)}
       {showLogin && <Backdrop>
         <Login 

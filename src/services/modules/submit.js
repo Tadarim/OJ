@@ -1,31 +1,51 @@
 import XYRequest from "..";
+import XXRequest from '../request/authRequest'
 
-export function codeSubmit(problem_id,language,code){
-    return XYRequest.post(
+export function codeSubmit( problem_id, language, code) {
+    return XXRequest.post(
         {
-            url:'/resources/add',
-            data:{
-                created_by:1,
-                problem_id:parseInt(problem_id),
+            url: '/submit/add',
+            data: {
+                problem_id: parseInt(problem_id),
                 language,
-                code:code
+                code
             }
         }
     )
 }
 
-export function getSubmitList(){
-    return XYRequest.get(
+export function getSubmitRecord(page,problem_id) {
+    return XXRequest.get(
         {
-            url:'/submit/list'
+            url: '/submit/list',
+            params:{
+                page,
+                page_size:10,
+                problem_id
+            }
         }
     )
 }
 
-export function getSubmitRecord(){
+export function getSubmitList() {
     return XYRequest.get(
         {
-            url:'/submit/get/one'
+            url: '/submit/list'
+        }
+    )
+}
+
+export function uploadImage(file){
+    console.log(file.get('quill-image'))
+    return XYRequest.post(
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            url:'/resource/add',
+            data:{
+                upload_slice:file.get('quill-image')
+            }
         }
     )
 }

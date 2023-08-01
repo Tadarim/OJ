@@ -207,8 +207,11 @@ export const CircleWrapper = styled.div`
             pointer-events: auto;
             opacity: 1;
             transform: translateY(0%);
-            height: 50vh;
+            /* height: 100vh; */
+            max-height: 100vh;
+            min-height: 50vh;
             cursor: auto;
+            overflow-y: auto;
         }
     }
 `

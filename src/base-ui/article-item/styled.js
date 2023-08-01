@@ -121,9 +121,10 @@ export const ItemWrapper = styled.div`
                 } 
             }
 
+           
         }
 
-        .toolbar-wrapper{
+       .toolbar-wrapper{
             display: flex;
             -webkit-box-align: center;
             align-items: center;
@@ -201,24 +202,6 @@ export const ItemWrapper = styled.div`
                     border-color: rgba(0,10,32,0.11);        
                 }
 
-                .operationLink{
-                    color: rgba(140,140,140, 1);
-                    display: inline-flex;
-                    -webkit-box-align: center;
-                    align-items: center;
-                    margin: 0px 8px;
-
-                    &:hover{
-                        color: rgba(0,122,255, 1);
-                    }
-
-                    svg{
-                        margin-right: 4px;
-                        width: 18px;
-                        height: 18px;
-                    }
-                }
-
                 .replyBtn{
                     border: none;
                     border-radius: 3px;
@@ -259,6 +242,6 @@ export const ItemWrapper = styled.div`
                     }
                 }
             }
-        }
+            }
     }
 `

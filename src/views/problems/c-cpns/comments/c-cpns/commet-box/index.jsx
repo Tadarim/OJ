@@ -2,9 +2,7 @@ import React, { memo } from 'react'
 import { BoxWrapper } from './styled'
 import CommentsEditor from '../../../../../../components/comment-editor'
 
-const CommentsBox = memo((props) => {
-
-    const {total} = props
+const CommentsBox = memo(({total,callback}) => {
 
     return (
         <BoxWrapper>
@@ -13,7 +11,7 @@ const CommentsBox = memo((props) => {
                     <div className="comment-num">{total}</div>条评论
                 </div>
             </div>
-            <CommentsEditor cancel={false}></CommentsEditor>
+            <CommentsEditor cancel={false} callback={callback} />
         </BoxWrapper>
     )
 })

@@ -3,7 +3,7 @@ import { EditorWrapper } from './styled'
 
 const CommentsEditor = memo((props) => {
 
-    const {cancel,cancelHandler} = props
+    const {cancel,cancelHandler,callback} = props
     
     const [value,setValue] = useState("")
 
@@ -16,7 +16,7 @@ const CommentsEditor = memo((props) => {
                     onChange={(e)=>{setValue(e.target.value)}}
                 />
                 <div className="tool-bar">
-                    <button className='comment'>
+                    <button className='comment' onClick={()=>{callback(value)}}>
                         <span>评论</span>
                     </button>
                     {

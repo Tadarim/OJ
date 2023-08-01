@@ -73,7 +73,7 @@ const Solution = memo(() => {
 
   useEffect(() => {
     fetchSolutionList(page, pid)
-  }, [page,pid])
+  }, [page, pid])
 
   return (
     <>

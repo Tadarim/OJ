@@ -22,20 +22,21 @@ const routes = [
     },
     {
         path: '/home',
-        element: <Home></Home>
+        element: <Home></Home>,
     },
     {
         path: '/password/reset',
         element: <PasswordReset></PasswordReset>
     },
-    {
-        path: '/problemset',
-        element: <Navigate to={"all"}></Navigate>
-    },
+
     {
         path: '/problemset',
         element: <Problemset></Problemset>,
         children: [
+            {
+                path: '/problemset',
+                element: <Navigate to={"all"}></Navigate>
+            },
             {
                 path: 'all',
                 element: <ProblemsetMain></ProblemsetMain>
@@ -66,33 +67,40 @@ const routes = [
         path: '/problems',
         element: <Navigate to={"/problemset"}></Navigate>
     },
-    {
-        path: '/problems/:pid',
-        element: <Navigate to={'description'}></Navigate>
-    },
+
     {
         path: '/problems/:pid',
         element: <Problems></Problems>,
         children: [
             {
+                path: '/problems/:pid',
+                element: <Navigate to={'description'}></Navigate>,
+                auth: true
+            },
+            {
                 path: 'description',
-                element: <ProblemMain></ProblemMain>
+                element: <ProblemMain></ProblemMain>,
+                auth: true
             },
             {
                 path: 'comments',
-                element: <Comments></Comments>
+                element: <Comments></Comments>,
+                auth: true
             },
             {
                 path: 'solution',
-                element: <Solution></Solution>
+                element: <Solution></Solution>,
+                auth: true
             },
             {
                 path: 'solution/:sid',
-                element: <SolutionInfo></SolutionInfo>
+                element: <SolutionInfo></SolutionInfo>,
+                auth: true
             },
             {
                 path: 'submissions',
-                element: <Submission></Submission>
+                element: <Submission></Submission>,
+                auth: true
             },
         ]
     },
@@ -102,7 +110,8 @@ const routes = [
     },
     {
         path: '/circle/discuss/:did',
-        element: <Discuss></Discuss>
+        element: <Discuss></Discuss>,
+        auth: true
     },
     {
         path: '/search',

@@ -5,7 +5,7 @@ import Hot from '../../base-ui/Hot'
 import { CircleWrapper } from './styled'
 import classNames from 'classnames'
 import ArticleItem from '../../base-ui/article-item'
-import { getDiscussEveryList, getDiscussList, searchDiscuss } from '../../services/modules/discuss'
+import { PublishDiscuss, getDiscussEveryList, getDiscussList, searchDiscuss } from '../../services/modules/discuss'
 import Paginations from '../../base-ui/pagination'
 
 const tabList = [{ desc: '最热', key: 'hottest' }, { desc: '最新', key: 'newest' }]
@@ -42,6 +42,15 @@ const Circle = memo(() => {
         const res = await searchDiscuss(key_word, page, type)
         setDiscussList(res.data?.list)
         setDiscussTotal(res.data?.total)
+    }
+    const fetchPublishResult = async(title, content, tags, cover_url, short_content) => {
+        const res = await PublishDiscuss(title, content, tags, cover_url, short_content)
+        setShowPublishEditor(false)
+        // fetchDiscussList()
+      }
+    
+    const publishDiscussHandler = (title, content, tags, cover_url, short_content) =>{
+        fetchPublishResult(title, content, tags, cover_url, short_content)
     }
 
     const tagsSearchHandler = (key_word) => {
@@ -191,6 +200,7 @@ const Circle = memo(() => {
                             mode='topic'
                             btnText='发起讨论'
                             cancelHandler={publishChangeHandler}
+                            publishHandler={publishDiscussHandler}
                         />
                     </div>
                 }

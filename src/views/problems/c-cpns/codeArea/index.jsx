@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useId, useRef, useState } from 'react'
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-jsx';// jsx模式的包
 import 'ace-builds/src-noconflict/theme-iplastic';// 主题样式
@@ -10,29 +10,25 @@ import { changeCodeLangAction } from '../../../../store/modules/problem';
 import { useDispatch, useSelector } from 'react-redux';
 
 import 'react-quill/dist/quill.snow.css';
+import { codeSubmit } from '../../../../services/modules/submit';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
-const CodeArea = memo(() => {
+const CodeArea = memo(({submitHandler}) => {
 
-    const {codeTemplate} = useSelector((state) => ({
-        codeTemplate: state.problem.codeTemplate
+    const { pid } = useParams()
+    const navigate = useNavigate()
+
+    const { codeTemplate, userId } = useSelector((state) => ({
+        codeTemplate: state.problem.codeTemplate,
+        userId: state.login.userId
     }))
 
     const [codeLang, setCodeLang] = useState('C')
-
     let [template] = codeTemplate?.filter((item) => {
         return item.language === codeLang
     })
-
-    const submitHandler = () =>{
-
-    }
-
     const [doc, setDoc] = useState(template?.template);
-
-    useEffect(() => {
-        setDoc(template?.template)
-    }, [template?.template])
 
     const [showList, setShowList] = useState(false)
     const langList = ['C', 'Golang', 'JavaScript']
@@ -45,6 +41,15 @@ const CodeArea = memo(() => {
     const langSelectHandler = () => {
         setShowList(!showList)
     }
+
+    // const submitHandler = async (userId, pid, language, doc) => {
+    //     const res = await codeSubmit(userId, pid, language, doc)
+    //     navigate(`/problems/${pid}/submissions`,{state:{res:res}})
+    // }
+
+    useEffect(() => {
+        setDoc(template?.template)
+    }, [template?.template])
 
     return (
         <CodeAreaWrapper>
@@ -75,7 +80,7 @@ const CodeArea = memo(() => {
                             </div>
                         </div>
                         <div className="codemirror-container">
-                            
+
                             <AceEditor
                                 mode='jsx'
                                 theme="iplastic"
@@ -99,15 +104,15 @@ const CodeArea = memo(() => {
                                     showLineNumbers: true,
                                     tabSize: 2,
                                 }}
-                            /> 
-                           
+                            />
+
                         </div>
                     </div>
                 </div>
             </div>
             <div className="code-area-bottom-container">
                 <div className="submit-container">
-                    <button className="submit" onClick={() => { submitHandler(codeLang, doc) }}>
+                    <button className="submit" onClick={() => { submitHandler(pid, codeLang, doc) }}>
                         <span>提交</span>
                     </button>
                 </div>

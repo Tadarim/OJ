@@ -3,7 +3,9 @@ import { LoginWrapper } from './styled'
 import { useDispatch, useSelector } from 'react-redux'
 import PasswordEle from './c-cpns/password-ele'
 import CaptchaEle from './c-cpns/captcha-ele'
-import { getLoginInfo } from '../../services'
+import { getLoginInfoByCode, getLoginInfoByPw } from '../../services'
+import { changeIsLoginAction, changeShowLoginAction } from '../../store/modules/login'
+import { message } from 'antd'
 
 
 const Login = (props) => {
@@ -19,8 +21,26 @@ const Login = (props) => {
         setIsCaptcha(!isCaptcha)
     }
 
-    const loginClickHandler = (email, code, login_type) => {
-        getLoginInfo(email, code, login_type)
+    const loginHandler = async (email, code) => {
+        let res;
+        isCaptcha
+            ?
+            res = await getLoginInfoByCode(email, code)
+            :
+            res = await getLoginInfoByPw(email, code)
+        console.log(res)
+        if (res.data?.accessToken) {
+            dispatch(changeIsLoginAction())
+            message.success('登陆成功！')
+            localStorage.setItem('OJToken', res.data?.accessToken)
+        } else {
+            message.warning('用户名或密码错误！')
+        }
+        dispatch(changeShowLoginAction())
+    }
+
+    const loginClickHandler = (email, code) => {
+        loginHandler(email, code)
     }
 
     return (

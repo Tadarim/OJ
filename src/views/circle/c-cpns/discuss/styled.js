@@ -290,7 +290,7 @@ export const DiscussWrapper = styled.div`
                 pointer-events: auto;
                 opacity: 1;
                 transform: translateY(0%);
-                height: 50vh;
+                max-height: 100vh;
                 cursor: auto;           
             }
 

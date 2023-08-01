@@ -6,8 +6,8 @@ import DiscussReply from '../discuss-reply'
 import MdEditor from '../../../../components/mdEditor'
 import { useParams } from 'react-router-dom'
 import { getDate } from '../../../../utils/getDate'
-import { getDiscussDetail } from '../../../../services/modules/discuss'
-import { getCommentList } from '../../../../services/modules/comment'
+import { PublishDiscuss, getDiscussDetail } from '../../../../services/modules/discuss'
+import { getCommentList, submitComment } from '../../../../services/modules/comment'
 import Paginations from '../../../../base-ui/pagination'
 
 const Discuss = memo(() => {
@@ -57,6 +57,17 @@ const Discuss = memo(() => {
     const res = await getCommentList(1, did, page)
     setCommentsList(res.data?.list)
     setCommentsTotal(res.data?.total)
+  }
+
+  const fetchPublishResult = async(content, operator_id, type) => {
+    const res = await submitComment(content, operator_id ,type)
+    setShowReplyEditor(false)
+    fetchDiscussComments()
+  }
+
+  const publishDiscussHandler = ( content,operator_id=did,type=1) =>{
+    console.log(type)
+    fetchPublishResult( content,operator_id,type)
   }
 
   // useEffect(() => {
@@ -138,6 +149,7 @@ const Discuss = memo(() => {
                     mode='reply'
                     btnText='回复讨论'
                     cancelHandler={replyHandler}
+                    publishHandler={publishDiscussHandler}
                   >
                   </MdEditor>
                 </div>

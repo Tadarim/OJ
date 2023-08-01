@@ -115,6 +115,10 @@ export const SolutionWrapper = styled.div`
         }
     }
 
+    .articleList{
+        width: 100%;
+    }
+
     .pagination{
         width: 100%;
         margin: 15px 0px;

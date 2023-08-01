@@ -45,9 +45,9 @@ const MainFilter = (props) => {
     }
 
     const difficultyChangeHandler = (difficulty) => {
-        if(difficulty !== ''){
+        if (difficulty !== '') {
             searchHandler(difficulty, 3)
-        }else{
+        } else {
             searchHandler('')
         }
     }
@@ -128,11 +128,6 @@ const MainFilter = (props) => {
                                 <span className="search-tags-item" key={index} >
                                     <span className="item-text-wrapper">
                                         <span className="item-text">{item}</span>
-                                    </span>
-                                    <span className="item-remove" onClick={() => { tagsChangeHandler(item) }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
-                                            <path fillRule="evenodd" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm1.414-10l2.293-2.293a1 1 0 00-1.414-1.414L12 10.586 9.707 8.293a1 1 0 00-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 101.414 1.414L12 13.414l2.293 2.293a1 1 0 001.414-1.414L13.414 12z" clipRule="evenodd"></path>
-                                        </svg>
                                     </span>
                                 </span>
                             )

@@ -8,6 +8,7 @@ import { changeUseMdAction, fetchProblemAction } from '../../store/modules/probl
 import { codeSubmit } from '../../services/modules/submit'
 import MdEditor from '../../components/mdEditor'
 import { getRandProblem } from '../../services/modules/problemset'
+import { PublishSolution } from '../../services/modules/solution'
 
 const Problems = memo(() => {
 
@@ -24,12 +25,9 @@ const Problems = memo(() => {
     }
   ), shallowEqual)
 
-  const [showResult, setShowResult] = useState(false)
 
   const submitHandler = (lang, code) => {
-    codeSubmit(pid, lang, code)
-    setShowResult(true)
-    // setTabSelect(3)
+    fetchCodeResult(pid, lang, code)
   }
 
   const fetchRandomProblem = async () => {
@@ -37,9 +35,26 @@ const Problems = memo(() => {
     navigate(`/problems/${res.data?.id}`)
   }
 
+  const fetchCodeResult = async (pid, lang, code) => {
+    const res = await codeSubmit(pid, lang, code)
+    navigate('submissions', { state: { res: res } })
+  }
+
   const modeChangeHandler = () => {
     dispatch(changeUseMdAction(!useMd))
   }
+
+  const fetchPublishResult = async(title, content, tags, cover_url, short_content, problem_id=pid) => {
+    const res = await PublishSolution(title, content, tags, cover_url, short_content, problem_id)
+    dispatch(changeUseMdAction(!useMd))
+    navigate('solution')
+  }
+
+  const publishSolutionHandler = (title, content, tags, cover_url, short_content) =>{
+    fetchPublishResult(title, content, tags, cover_url, short_content)
+  }
+
+
   // useEffect(()=>{
   //   dispatch(fetchProblemAction(pid))
   // },[pid])
@@ -53,7 +68,6 @@ const Problems = memo(() => {
           problemInfo={problemInfo}
           codeTemplate={codeTemplate}
           codeLang={codeLang}
-          showResult={showResult}
         />
         <div className="middle-area"></div>
         {
@@ -63,6 +77,7 @@ const Problems = memo(() => {
               mode='solution'
               btnText='发布题解'
               cancelHandler={modeChangeHandler}
+              publishHandler={publishSolutionHandler}
             />
             :
             <CodeArea

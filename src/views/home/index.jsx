@@ -35,18 +35,22 @@ const Home = () => {
   const [page, setPage] = useState(1)
 
   const loadMoreHandler = () => {
-    setPage(page+1)
+    setPage((prevPage) => prevPage + 1)
+  }
+
+
+  const fetchDiscussList = async (page) => {
+    const res = await getDiscussList(page)
+    // setDiscussList((prevList) => [...prevList,...res.data?.list])
+  }
+  const fetchDiscussEveryList = async (page) => {
+    const res = await getDiscussEveryList()
+    setDiscussEveryList(res.data?.days_discuss)
   }
 
   useEffect(() => {
-    getDiscussList(page).then(res => {
-      setDiscussList(res.data?.list)
-    })
-
-    getDiscussEveryList().then(res => {
-      console.log(res)
-      setDiscussEveryList(res.data?.days_discuss)
-    })
+    fetchDiscussList(page)
+    fetchDiscussEveryList()
   }, [page])
 
   return (
@@ -56,7 +60,7 @@ const Home = () => {
           <div className="content-left">
             <LeftHeader />
             <LeftMain discussList={discussList}></LeftMain>
-            <button className="loadMoreButton" onClick={loadMoreHandler}> 
+            <button className="loadMoreButton" onClick={loadMoreHandler}>
               <span>加载更多</span>
             </button>
           </div>

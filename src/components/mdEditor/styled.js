@@ -231,9 +231,6 @@ export const EditorWrapper = styled.div`
 
         .main{
             flex:  1 1 auto;
-            .ql-editor{
-               height: 100%;
-            }
         }
     }
 `

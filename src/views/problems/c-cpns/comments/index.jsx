@@ -4,31 +4,37 @@ import { CommentsWrapper } from './styled'
 import CommentsBox from './c-cpns/commet-box'
 import CommentBodyV1 from '../../../../components/comment-body-v1'
 import Paginations from '../../../../base-ui/pagination'
-import { getCommentList } from '../../../../services/modules/comment'
+import { getCommentList, submitComment } from '../../../../services/modules/comment'
+import { useParams } from 'react-router-dom'
 
 const Comments = memo(() => {
 
     const [commentsList,setCommentsList] = useState([])
     const [commentsTotal,setCommentsTotal] = useState()
+    const {pid} = useParams()
 
     const [page,setPage] = useState(1)
     const pageChangeHandler = (page) =>{
         setPage(page)
     }
 
+    const submitComments = async(value) => {
+       const res = await submitComment() 
+    }
+
+
     useEffect(()=>{
-        getCommentList(2,1,page).then(res => {
-            console.log(res)
+        getCommentList(2,pid,page).then(res => {
             setCommentsList(res.data?.list)
             setCommentsTotal(res.data?.total)
         })
-    },[page])
+    },[page,pid])
 
     return (
         <CommentsWrapper>
             <div className="content-wrapper">
                 <div className="content">
-                    <CommentsBox total={commentsTotal}></CommentsBox>
+                    <CommentsBox total={commentsTotal} callback={submitComments} />
                     {
                         commentsList?.map((item,index) =>
                             <CommentBodyV1 comment={item} key={index} />

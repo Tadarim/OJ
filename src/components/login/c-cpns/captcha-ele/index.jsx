@@ -24,7 +24,7 @@ const CaptchaEle = (props) => {
 
         captcha === '' && setEmptyCaptcha(true)
 
-        loginHandler(email,captcha,2)
+        loginHandler(email,captcha)
     }
 
     const getCaptchaHandler = () =>{

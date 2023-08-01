@@ -5,7 +5,7 @@ export function getAllProblemset(page) {
         {
             url: '/problem/get',
             params: {
-                page_size:10,
+                page_size: 10,
                 page
             }
         }
@@ -25,10 +25,10 @@ export function searchProblem(key_word, page, type) {
 }
 
 
-export function getRandProblem(){
+export function getRandProblem() {
     return XYRequest.get(
         {
-            url:'/problem/get/rand'
+            url: '/problem/get/rand'
         }
     )
 }
