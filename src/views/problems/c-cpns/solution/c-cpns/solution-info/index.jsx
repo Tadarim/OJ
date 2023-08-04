@@ -6,9 +6,10 @@ import CommentsBox from '../../../comments/c-cpns/commet-box'
 import Paginations from '../../../../../../base-ui/pagination'
 import CommentBodyV1 from '../../../../../../components/comment-body-v1'
 import { getSolutionDetail } from '../../../../../../services/modules/solution'
-import { getCommentList } from '../../../../../../services/modules/comment'
+import { getCommentList, submitComment } from '../../../../../../services/modules/comment'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getDate } from '../../../../../../utils/getDate'
+import { message } from 'antd'
 
 
 const SolutionInfo = memo(() => {
@@ -54,10 +55,20 @@ const SolutionInfo = memo(() => {
         setCommentsList(res.data?.list)
         setCommentsTotal(res.data?.total)
     }
+    const publishSolutionComments = async (content,operator_id=sid ,type=3) => {
+        const res = await submitComment(content, operator_id, type)
+        res.code === 0 ? message.success('评论成功') : message.error('评论失败')
+        fetchSolutionComments()
+    }
+
+    const publishCommentsHandler = (content) => {
+        publishSolutionComments(content)
+    }
 
     const linkToSolution = () => {
         navigate(`/problems/${pid}/solution`)
     }
+
 
     useEffect(() => {
         fetchSolutionDetail()
@@ -79,7 +90,7 @@ const SolutionInfo = memo(() => {
                             <div className='main-content-wrapper'>
                                 <div className="header-wrapper">
                                     <div className="title-wrapper">
-                                        <a href="/u/guanpengchn/">
+                                        <a href={`/profile/${detail.entity.user_id}`}>
                                             <span className="avatar-wrapper">
                                                 <img src={detail?.avatar_url} size="19" />
                                             </span>
@@ -87,7 +98,7 @@ const SolutionInfo = memo(() => {
                                         <h1 className="title">{detail.entity.title}</h1>
                                     </div>
                                     <div className="infos-wrapper">
-                                        <a href="/u/guanpengchn/">
+                                        <a href="">
                                             <div className="username-container">
                                                 <span className="name-wrap">{detail.user_name}</span>
                                             </div>
@@ -111,10 +122,10 @@ const SolutionInfo = memo(() => {
                                 </div>
                             </div>
                             <div className="discuss-wrapper">
-                                <CommentsBox total={commentsTotal}></CommentsBox>
+                                <CommentsBox total={commentsTotal}  callback={publishCommentsHandler}></CommentsBox>
                                 {
                                     commentsList?.map((item, index) =>
-                                        <CommentBodyV1 comment={item} key={index} />
+                                        <CommentBodyV1 comment={item} id={sid} type={3} key={index} />
                                     )
                                 }
                                 <Paginations

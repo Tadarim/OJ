@@ -113,7 +113,6 @@ export const SearchWrapper = styled.div`
         padding-top: 2.5rem;
         background-color: rgb(247,248,250);
         max-width: 880px;
-        margin: 0 auto;
-        
+        margin: 0 auto;    
     }
 `

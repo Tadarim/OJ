@@ -4,13 +4,33 @@ import { Table } from 'antd'
 import { SubmissionsWrapper } from './styled'
 import { useLocation, useParams } from 'react-router-dom';
 import { getSubmitRecord } from '../../../../services/modules/submit';
+import Paginations from '../../../../base-ui/pagination';
+import { getDate } from '../../../../utils/getDate';
+
+const listHandler = (list) => {
+    const newList = []
+    for (let item of list) {
+        if (!item.is_accepted) {
+            if (!item.compline_success) {
+                item.result = '编译出错'
+            } else {
+                item.result = '解答错误'
+            }
+        } else {
+            item.result = '解答成功'
+        }
+        item.key = item.id
+        item.created_at = getDate(item.created_at)
+        newList.push(item)
+    }
+    return newList
+}
 
 const dataSource = [
     {
         key: '1',
         result: '执行出错',
         cost: 'N/A',
-        memory: 'N/A',
         language: 'JavaScript',
         time: '2023/07/18 17:06'
     },
@@ -18,11 +38,11 @@ const dataSource = [
         key: '2',
         result: '解答错误',
         cost: 'N/A',
-        memory: 'N/A',
         language: 'JavaScript',
         time: '2023/07/18 17:05',
     },
 ];
+
 
 const columns = [
     {
@@ -32,13 +52,8 @@ const columns = [
     },
     {
         title: '执行用时',
-        dataIndex: 'cost',
-        key: 'cost',
-    },
-    {
-        title: '内存消耗',
-        dataIndex: 'memory',
-        key: 'memory',
+        dataIndex: 'cost_time',
+        key: 'cost_time',
     },
     {
         title: '语言',
@@ -47,70 +62,115 @@ const columns = [
     },
     {
         title: '提交时间',
-        dataIndex: 'time',
-        key: 'time'
+        dataIndex: 'created_at',
+        key: 'created_at'
     }
 ];
 
 const Submission = memo((props) => {
 
-    const { showResult } = props
-    const [recordList,setRecordList] = useState([])
-    const [recordTotal,setRecordTotal] = useState('')
+    const { pid } = useParams()
+    // const { showResult } = props
+    const [recordList, setRecordList] = useState([])
+    const [recordTotal, setRecordTotal] = useState('')
 
-    const location = useLocation()
-    console.log(location.state.res)
-
-    const fetchSubmitHandler = async() => {
-        const res = await getSubmitRecord()
+    const [page, setPage] = useState(1);
+    const pageChangeHandler = (page) => {
+        setPage(page)
     }
 
-    useEffect(()=>{
-        
-    },[])
+    const location = useLocation()
+
+    const fetchSubmitHandler = async (page, pid) => {
+        const res = await getSubmitRecord(page, pid)
+        setRecordList(listHandler(res.data?.list))
+        setRecordTotal(res.data?.total)
+    }
+
+    useEffect(() => {
+        fetchSubmitHandler(page, pid)
+    }, [page,pid])
 
     return (
         <SubmissionsWrapper>
             <div className="container">
                 <div className="submissions">
                     {
-                        showResult &&
+                        location.state?.res &&
                         <div className="result-container">
                             <div className="container">
                                 <div className="result">
                                     <div className="result-info-wrapper">
                                         <div className="result-info">
                                             <span>执行结果：</span>
-                                            <div className="error">执行出错</div>
+                                            
+                                            {location.state?.res.hasOwnProperty("compline_error") && 
+                                            <div className="error">
+                                                编译错误
+                                            </div>
+                                            }
+                                            {location.state?.res.hasOwnProperty("testCase") && 
+                                            <div className="error">
+                                                解答错误
+                                            </div>
+                                            }
+                                            {location.state?.res.hasOwnProperty("success") && 
+                                            <div className="right">
+                                                解答正确
+                                            </div>
+                                            }
+
                                         </div>
                                     </div>
                                 </div>
-                                <div className="error-container">
-                                    <div className="content-wrapper">
-                                        <div className="error">
-                                            {
-                                                `Line 7 in solution.js
-re
-^
-ReferenceError: re is not defined
-Line 7: Char 5 in solution.js (removeElement)
-Line 20: Char 19 in solution.js (Object.<anonymous>)
-Line 16: Char 8 in runner.js (Object.runner)
-Line 9: Char 26 in solution.js (Object.<anonymous>)
-at Module._compile (node:internal/modules/cjs/loader:1101:14)
-at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)
-at Module.load (node:internal/modules/cjs/loader:981:32)
-at Function.Module._load (node:internal/modules/cjs/loader:822:12)
-at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
-at node:internal/main/run_main_module:17:47`}
+
+                                {
+                                    location.state?.res.hasOwnProperty("compline_error") &&
+                                    <div className="error-container">
+                                        <div className="content-wrapper">
+                                            <div className="error">
+                                                {location.state?.res.compline_error}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
+
+                                {
+                                    location.state?.res.hasOwnProperty("testCase") &&
+                                <div className="testCase-wrapper">
+                                    <div className="row-container e1sc596w0">
+                                        <div width="90" className="field e1sc596w1">输入：</div>
+                                        <div className="value-container e1sc596w3">
+                                            <div className="value e1sc596w2">{location.state?.res.testCase.Input}</div>
+                                        </div>
+                                    </div>
+                                    <div className="row-container e1sc596w0">
+                                        <div width="90" className="field e1sc596w1">输出：</div>
+                                        <div className="value-container e1sc596w3">
+                                            <div className="value e1sc596w2">{location.state?.res.testCase.OutputSuccess}</div>
+                                        </div>
+                                    </div>
+                                    <div className="row-container e1sc596w0">
+                                        <div width="90" className="field e1sc596w1">预期结果：</div>
+                                        <div className="value-container e1sc596w3">
+                                            <div className="value e1sc596w2">{location.state?.res.testCase.OutputResult}</div>
+                                        </div>
+                                    </div>
+                                </div>}
+
                             </div>
                         </div>
                     }
                     <div className='table-container'>
-                        <Table dataSource={dataSource} columns={columns} pagination={{defaultCurrent:1,total:50,position:["bottomCenter"],showSizeChanger:false}} />
+                        <Table
+                            dataSource={recordList}
+                            columns={columns}
+                            pagination={false}
+                        />
+                        <Paginations
+                            total={recordTotal}
+                            pageChangeHandler={pageChangeHandler}
+                        />
                     </div>
                 </div>
             </div>

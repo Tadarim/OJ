@@ -107,7 +107,7 @@ export const ItemWrapper = styled.div`
                             border-radius: 12px;
                             margin: 2px 10px 2px 0px;
                         }
-                    } 
+                } 
                     .desc-wrapper{
                         overflow: hidden;
                         -webkit-box-align: center;
@@ -139,7 +139,7 @@ export const ItemWrapper = styled.div`
                 align-items: center;
                 position: sticky;
                 bottom: 0px;
-                z-index: 1000;
+                /* z-index: 1000; */
 
                 .reaction-wrapper{
                     margin-left: 10px;
@@ -164,6 +164,16 @@ export const ItemWrapper = styled.div`
                                 cursor: pointer;
                                 color: rgba(60,60,67,0.6);
                                 font-weight: 500;
+
+                                &.active{
+                                    svg{
+                                        color:rgb(45,181,93) !important;
+                                    }
+                                    
+                                    .upvoteBtnText{
+                                        color:rgb(45,181,93) !important;
+                                    }
+                                }
 
                                 svg{
                                     padding: 2px;
@@ -202,11 +212,11 @@ export const ItemWrapper = styled.div`
                     border-color: rgba(0,10,32,0.11);        
                 }
 
-                .replyBtn{
-                    border: none;
+                button{
+                    border: none !important;
                     border-radius: 3px;
                     line-height: 20px;
-                    outline: none;
+                    outline: none !important;
                     user-select: none;
                     text-decoration: none;
                     display: inline-flex;
@@ -217,13 +227,14 @@ export const ItemWrapper = styled.div`
                     overflow: hidden;
                     cursor: pointer;
                     opacity: 1;
-                    background-color: transparent;
+                    background-color: transparent  !important;;
                     padding: 0px;
                     color: rgba(140,140,140, 1);
                     font-size: 14px;
                     vertical-align: text-bottom;
                     margin: 0px 8px;
                     transition: none 0s ease 0s;
+                    box-shadow: none;
 
                     &:hover{
                         color: rgba(0,122,255, 1);

@@ -16,7 +16,7 @@ const Problems = memo(() => {
   const { pid } = useParams()
   const navigate = useNavigate()
 
-  const { problemInfo, codeTemplate, codeLang, useMd } = useSelector((state) => (
+  const { codeTemplate, codeLang, useMd } = useSelector((state) => (
     {
       problemInfo: state.problem.problemInfo,
       codeTemplate: state.problem.codeTemplate,
@@ -26,38 +26,37 @@ const Problems = memo(() => {
   ), shallowEqual)
 
 
-  const submitHandler = (lang, code) => {
-    fetchCodeResult(pid, lang, code)
-  }
-
   const fetchRandomProblem = async () => {
     const res = await getRandProblem()
-    navigate(`/problems/${res.data?.id}`)
+    res.code === 0 && navigate(`/problems/${res.data?.id}`)
   }
 
-  const fetchCodeResult = async (pid, lang, code) => {
-    const res = await codeSubmit(pid, lang, code)
-    navigate('submissions', { state: { res: res } })
+  const fetchCodeResult = async (code, lang) => {
+    const res = await codeSubmit(code, lang, pid)
+    res.code === 0 && navigate('submissions', { state: { res: res.data.output } })
+  }
+
+  const submitHandler = (code, lang) => {
+    fetchCodeResult(code, lang)
   }
 
   const modeChangeHandler = () => {
     dispatch(changeUseMdAction(!useMd))
   }
 
-  const fetchPublishResult = async(title, content, tags, cover_url, short_content, problem_id=pid) => {
-    const res = await PublishSolution(title, content, tags, cover_url, short_content, problem_id)
+  const fetchPublishResult = async (content, title, tags, cover_url, problem_id = pid) => {
+    const res = await PublishSolution(content, title, tags, cover_url, problem_id)
     dispatch(changeUseMdAction(!useMd))
     navigate('solution')
   }
-
-  const publishSolutionHandler = (title, content, tags, cover_url, short_content) =>{
-    fetchPublishResult(title, content, tags, cover_url, short_content)
+  const publishSolutionHandler = (content, title, tags, cover_url) => {
+    fetchPublishResult(content, title, tags, cover_url)
   }
 
 
-  // useEffect(()=>{
-  //   dispatch(fetchProblemAction(pid))
-  // },[pid])
+  useEffect(() => {
+    dispatch(fetchProblemAction(pid))
+  }, [pid])
 
   return (
     <ProblemsWrapper>
@@ -65,9 +64,6 @@ const Problems = memo(() => {
         <ProblemContainer
           pid={pid}
           fetchRandomProblem={fetchRandomProblem}
-          problemInfo={problemInfo}
-          codeTemplate={codeTemplate}
-          codeLang={codeLang}
         />
         <div className="middle-area"></div>
         {

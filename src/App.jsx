@@ -24,8 +24,7 @@ const App = () => {
   return (
     <div className='app'>
       <AppHeader></AppHeader>
-        {/* {RouterGurad(routes)} */}
-        {useRoutes(routes)}
+        {RouterGurad(routes)}
       {showLogin && <Backdrop>
         <Login 
         showBtnClick

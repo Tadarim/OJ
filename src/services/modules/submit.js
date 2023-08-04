@@ -1,9 +1,13 @@
 import XYRequest from "..";
-import XXRequest from '../request/authRequest'
 
-export function codeSubmit( problem_id, language, code) {
-    return XXRequest.post(
+const token = localStorage.getItem("OJToken")
+
+export function codeSubmit(code, language, problem_id) {
+    return XYRequest.post(
         {
+            headers: {
+                Authorization: token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjQsImV4cCI6MTY5MDg3ODgwMiwibmJmIjoxNjkwNzkyNDAyLCJpYXQiOjE2OTA3OTI0MDJ9.Qt_0u-nc1VE-Feaw55_eUqlDUN3QQfxnvBjCuuHguSM'
+            },
             url: '/submit/add',
             data: {
                 problem_id: parseInt(problem_id),
@@ -14,13 +18,16 @@ export function codeSubmit( problem_id, language, code) {
     )
 }
 
-export function getSubmitRecord(page,problem_id) {
-    return XXRequest.get(
+export function getSubmitRecord(page, problem_id) {
+    return XYRequest.get(
         {
+            headers: {
+                Authorization: token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjQsImV4cCI6MTY5MDg3ODgwMiwibmJmIjoxNjkwNzkyNDAyLCJpYXQiOjE2OTA3OTI0MDJ9.Qt_0u-nc1VE-Feaw55_eUqlDUN3QQfxnvBjCuuHguSM'
+            },
             url: '/submit/list',
-            params:{
+            params: {
                 page,
-                page_size:10,
+                page_size: 10,
                 problem_id
             }
         }
@@ -35,16 +42,15 @@ export function getSubmitList() {
     )
 }
 
-export function uploadImage(file){
-    console.log(file.get('quill-image'))
+export function uploadImage(file) {
     return XYRequest.post(
         {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
-            url:'/resource/add',
-            data:{
-                upload_slice:file.get('quill-image')
+            url: '/resource/add',
+            data: {
+                upload_slice: file.get('quill-image')
             }
         }
     )

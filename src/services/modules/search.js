@@ -1,12 +1,12 @@
 import XYRequest from "..";
 
-export function getSearchList(mode,key_word,page){
+export function getSearchList(mode, key_word, page) {
     return XYRequest.post({
-        url:`/${mode}/search`,
-        data:{
+        url: `/${mode}/search`,
+        data: {
             key_word,
             page,
-            page_size:10
+            page_size: 10
         }
     })
 }

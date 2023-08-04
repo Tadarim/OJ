@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import PasswordEle from './c-cpns/password-ele'
 import CaptchaEle from './c-cpns/captcha-ele'
 import { getLoginInfoByCode, getLoginInfoByPw } from '../../services'
-import { changeIsLoginAction, changeShowLoginAction } from '../../store/modules/login'
+import { changeAvatarUrlAction, changeIsLoginAction, changeShowLoginAction, changeUserNameAction } from '../../store/modules/login'
 import { message } from 'antd'
 
 
@@ -28,11 +28,13 @@ const Login = (props) => {
             res = await getLoginInfoByCode(email, code)
             :
             res = await getLoginInfoByPw(email, code)
-        console.log(res)
-        if (res.data?.accessToken) {
+        if (res.data?.token) {
             dispatch(changeIsLoginAction())
+            dispatch(changeUserNameAction(res.data.user_name))
+            dispatch(changeAvatarUrlAction(res.data.avatar_url))
+            localStorage.removeItem('OJToken')
             message.success('登陆成功！')
-            localStorage.setItem('OJToken', res.data?.accessToken)
+            localStorage.setItem('OJToken', res.data?.token)
         } else {
             message.warning('用户名或密码错误！')
         }

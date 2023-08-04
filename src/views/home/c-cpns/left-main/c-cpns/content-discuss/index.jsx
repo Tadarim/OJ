@@ -7,7 +7,7 @@ const ContentDiscuss = (props) => {
 
   return (
     <DiscussWrapper>
-        {coverLink && <a className="img-link" href={coverLink}>
+        {imgSrc && <a className="img-link" href={coverLink}>
           <img src={imgSrc} alt="" />
         </a>}
         <div className="content">

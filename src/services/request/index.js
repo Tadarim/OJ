@@ -1,29 +1,29 @@
 import axios from "axios";
 import { BASE_URL, TIMEOUT } from "./config";
 
-class XYRequest{
-    constructor(baseURL,timeout){
+class XYRequest {
+    constructor(baseURL, timeout) {
         this.instance = axios.create({
             baseURL,
             timeout
         })
 
-        this.instance.interceptors.response.use((res) => {
+        this.instance.interceptors.response.use(res => {
             return res.data
-        },err => {
+        }, err => {
             return err
         })
     }
 
-    request(config){
+    request(config) {
         return this.instance.request(config)
     }
-    get(config){
-        return this.request({...config,method:"get"})
+    get(config) {
+        return this.request({ ...config, method: "get" })
     }
-    post(config){
-        return this.request({...config,method:"post"})
+    post(config) {
+        return this.request({ ...config, method: "post" })
     }
 }
 
-export default new XYRequest(BASE_URL,TIMEOUT)
+export default new XYRequest(BASE_URL, TIMEOUT)

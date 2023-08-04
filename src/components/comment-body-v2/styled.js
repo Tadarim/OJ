@@ -60,6 +60,10 @@ export const BodyWrapper = styled.div`
                     font-size: 12px;
                     line-height: 20px;
                     color: rgba(89,89,89, 1);
+
+                    a{
+                        color: rgb(0,122,255);
+                    }
                 }
 
                 .comment-toolbar{
@@ -86,9 +90,23 @@ export const BodyWrapper = styled.div`
                         box-shadow: none;
 
                         &:hover{
-                            color: rgba(191,191,191,1);
-                            background: transparent;
-                            box-shadow: none;
+                            svg{
+                                color:rgb(45,181,93) !important;
+                            }
+                                    
+                            span{
+                                color:rgb(45,181,93) !important;
+                            }
+                        }
+
+                        &.active{
+                            svg{
+                                color:rgb(45,181,93) !important;
+                            }
+                                    
+                            span{
+                                color:rgb(45,181,93) !important;
+                            }
                         }
 
                         .btnContent{
@@ -96,6 +114,12 @@ export const BodyWrapper = styled.div`
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
+                        }
+                    }
+
+                    .upvoteBtn{
+                        &.active{
+                            
                         }
                     }
                 }

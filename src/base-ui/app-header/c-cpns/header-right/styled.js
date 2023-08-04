@@ -78,7 +78,7 @@ export const RightWrapper = styled.div`
                 padding-right: 1px;
                 flex-shrink: 0;
 
-                a{
+                > a{
                   width: 3.5rem;
                   height: 3.5rem;
                   display: flex;

@@ -12,11 +12,14 @@ const LeftMain = (props) => {
       {
         discussList?.map((item, index) =>
           <ContentDiscuss
+            coverLink={`/circle/discuss/${item.id}`}
+            imgSrc={item.cover_url}
             key={index}
             avatarSrc={item.avatar_url}
-            titleLink='circle/discuss/YxuRDH/'
+            avatarLink={`/profile/${item.user_id}`}
+            titleLink={`/circle/discuss/${item.id}`}
             title={item.title}
-            contentLink='/circle/discuss/et28ow/'
+            contentLink={`/circle/discuss/${item.id}`}
             content={item.short_content}
             time={getDate(item.created_at)}
             tags={item.tags.split(' ')}

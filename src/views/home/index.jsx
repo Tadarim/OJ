@@ -38,10 +38,9 @@ const Home = () => {
     setPage((prevPage) => prevPage + 1)
   }
 
-
   const fetchDiscussList = async (page) => {
     const res = await getDiscussList(page)
-    // setDiscussList((prevList) => [...prevList,...res.data?.list])
+    setDiscussList((prevList) => [...prevList,...res.data?.list])
   }
   const fetchDiscussEveryList = async (page) => {
     const res = await getDiscussEveryList()
@@ -69,10 +68,6 @@ const Home = () => {
             <Swipper swipperImg={swipperData} />
             <Hot
               title='热门讨论'
-              content={discussEveryList}
-            />
-            <Hot
-              title='热门题解'
               content={discussEveryList}
             />
           </div>

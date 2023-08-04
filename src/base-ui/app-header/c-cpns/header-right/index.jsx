@@ -1,16 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { RightWrapper } from './styled'
 import { changeIsLoginAction, changeShowLoginAction } from '../../../../store/modules/login'
 import { useDispatch, useSelector } from 'react-redux'
-import { Badge } from 'antd'
 import { useState } from 'react'
 
 const HeaderRight = () => {
 
   const dispatch = useDispatch()
+  const token = localStorage.getItem('OJToken')
 
-  const { isLogin } = useSelector((state) => ({
-    isLogin: state.login.isLogin
+  const { isLogin,userName,avatarUrl } = useSelector((state) => ({
+    isLogin: state.login.isLogin,
+    userName: state.login.userName,
+    avatarUrl: state.login.avatarUrl
   }))
 
   const LoginClickHandler = () => {
@@ -18,6 +20,16 @@ const HeaderRight = () => {
   }
 
   const [showPopper, setShowPopper] = useState(false)
+  const loginOutHandler = () => {
+    dispatch(changeIsLoginAction(false))
+    localStorage.removeItem('OJToken')
+  }
+
+  useEffect(()=>{
+    if(token){
+      dispatch(changeIsLoginAction(true))
+    }
+  },[token])
 
   return (
     <RightWrapper>
@@ -34,24 +46,22 @@ const HeaderRight = () => {
               :
               <div className="avatar-wrapper" onClick={() => { setShowPopper(!showPopper) }}>
                 <span>
-                  {/* <Badge dot> */}
-                    <img src="https://assets.leetcode.cn/aliyun-lc-upload/users/yan-yi-6z/avatar_1636435562.png?x-oss-process=image%2Fresize%2Ch_40%2Cw_40%2Fformat%2Cwebp" size="20" alt='' />
-                  {/* </Badge> */}
+                    <img src={avatarUrl} size="20" alt='' /> 
                 </span>
                 {
                   showPopper &&
                   <div className="popper-container">
                     <div className="popper">
                       <div className="header-wrapper">
-                        <a href="/u/yan-yi-6z/">
-                          <img src="https://assets.leetcode.cn/aliyun-lc-upload/users/yan-yi-6z/avatar_1636435562.png?x-oss-process=image%2Fresize%2Ch_40%2Cw_40%2Fformat%2Cwebp" size="20" alt='' />
+                        <a href="/profile">
+                          <img src={avatarUrl} size="20" alt='' />
                         </a>
                         <div className="username-container">
-                          <a href="/u/yan-yi-6z/">言佚</a>
+                          <a href="/profile">{userName}</a>
                         </div>
                       </div>
                       <div className="main-wrapper">
-                        <a href="/profile/info/" className="item-wrapper">
+                        <a href="/profile" className="item-wrapper">
                           <div className="item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="18" height="18" fill="currentColor">
                               <path fillRule="evenodd" d="M7.583 5.833a2.417 2.417 0 114.299 1.517A3.246 3.246 0 0113.25 10a.75.75 0 01-1.5 0 1.75 1.75 0 00-3.5 0 .75.75 0 01-1.5 0c0-1.094.54-2.061 1.368-2.65a2.407 2.407 0 01-.535-1.517zm3.334 0a.917.917 0 11-1.834 0 .917.917 0 011.834 0z" clipRule="evenodd"></path>
@@ -61,7 +71,7 @@ const HeaderRight = () => {
                           </div>
                           <div className="item-text">个人资料</div>
                         </a>
-                        <a href="" className="item-wrapper" onClick={() => { dispatch(changeIsLoginAction()) }}>
+                        <a className="item-wrapper" onClick={loginOutHandler}>
                           <div className="item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                               <path fillRule="evenodd" d="M18.586 13h-8.083c-.523 0-.947-.448-.947-1s.424-1 .947-1h8.083l-2.738-2.737a1 1 0 011.415-1.415l4.444 4.445a1 1 0 010 1.414l-4.444 4.445a1 1 0 01-1.415-1.415L18.586 13zM9 5H6a1 1 0 00-1 1v12a1 1 0 001 1h3a1 1 0 110 2H6a3 3 0 01-3-3V6a3 3 0 013-3h3a1 1 0 010 2z" clipRule="evenodd"></path>

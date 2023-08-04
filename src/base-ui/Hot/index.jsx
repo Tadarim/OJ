@@ -16,7 +16,7 @@ const Hot = (props) => {
               key={index}
               num={index + 1}
               avatar={item.avatar_url}
-              link={item.link}
+              link={`/circle/discuss/${item.id}`}
               desc={item.short_content}
               title={item.title}
             />)

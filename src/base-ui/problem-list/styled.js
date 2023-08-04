@@ -12,13 +12,15 @@ export const ProblemListWrapper = styled.div`
                 width: 100%;
 
                 .list-header-container{
-                    border-radius: rgb(240 240 240);
-                    border-bottom-width: 1px;
+                    border-bottom: 1px solid rgb(240,240,240);
                     width: 100%;
+                    height: 50px;
                     
                     .list-header{
                         display: flex;
                         flex: 1 0 auto;
+                        align-items: center;
+                        height: 100%;
 
                         .header-item-container{
                             flex: 2 2 auto;

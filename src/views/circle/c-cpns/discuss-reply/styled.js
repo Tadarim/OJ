@@ -5,6 +5,7 @@ export const ReplyWrapper = styled.div`
     box-shadow: 0 2px 8px rgba(0,0,0, 0.08),0 1px 2px rgba(0,0,0, 0.1);
     border-radius: 8px;
     padding: 16px 16px 0px;
+    margin-top: 10px;
 
     .metaData{
         display: flex;
@@ -102,6 +103,10 @@ export const ReplyWrapper = styled.div`
             p{
                 margin: 8px 0px;
             }
+
+            a{
+                color: rgb(0,122,255) !important;
+            }
         }
     }
 
@@ -160,6 +165,16 @@ export const ReplyWrapper = styled.div`
                                 svg{
                                     color: rgba(45,181,93,1);
                                     background-color: rgba(45,181,93,0.08);
+                                }
+                                span{
+                                    color: rgba(45,181,93,1);
+                                }
+                            }
+
+                            &.active{
+                                svg{
+                                    color: rgba(45,181,93,1);
+                                    /* background-color: rgba(45,181,93,0.08); */
                                 }
                                 span{
                                     color: rgba(45,181,93,1);

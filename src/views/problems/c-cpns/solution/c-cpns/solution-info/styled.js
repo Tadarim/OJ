@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 export const InfoWrapper = styled.div`
     width: 100%;
     background-color: #bfa;
-    height: 800px;
+    overflow-y: auto;
 
     .info{
         background: rgba(255,255,255, 1);

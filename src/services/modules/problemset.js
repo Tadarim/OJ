@@ -24,7 +24,6 @@ export function searchProblem(key_word, page, type) {
     })
 }
 
-
 export function getRandProblem() {
     return XYRequest.get(
         {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Pagination } from 'antd'
 
 import { PaginationWrapper } from './style'
@@ -16,13 +16,16 @@ const Paginations = (props) => {
 
     return (
         <PaginationWrapper>
-            <Pagination
-                defaultCurrent={1}
-                current={current}
-                onChange={onChange}
-                total={total}
-                showSizeChanger={false}
-            />
+            {
+                total !== 0 &&
+                <Pagination
+                    defaultCurrent={1}
+                    current={current}
+                    onChange={onChange}
+                    total={total}
+                    showSizeChanger={false}
+                />
+            }
         </PaginationWrapper>
     )
 }

@@ -1,8 +1,12 @@
 import XYRequest from '..'
-import XXRequest from '../request/authRequest'
+
+const token = localStorage.getItem('OJToken')
 
 export function getSolutionList(page, problem_id) {
     return XYRequest.get({
+        headers: {
+            Authorization: token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjQsImV4cCI6MTY5MDg3ODgwMiwibmJmIjoxNjkwNzkyNDAyLCJpYXQiOjE2OTA3OTI0MDJ9.Qt_0u-nc1VE-Feaw55_eUqlDUN3QQfxnvBjCuuHguSM'
+        },
         url: '/solution/list',
         params: {
             page,
@@ -25,15 +29,17 @@ export function searchSolution(key_word, page, problem_id, type) {
     })
 }
 
-export function PublishSolution(title, content, cover_url, tags, short_content, problem_id) {
-    return XXRequest.post({
+export function PublishSolution(content, title, tags, cover_url, problem_id) {
+    return XYRequest.post({
+        headers: {
+            Authorization: token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjQsImV4cCI6MTY5MDg3ODgwMiwibmJmIjoxNjkwNzkyNDAyLCJpYXQiOjE2OTA3OTI0MDJ9.Qt_0u-nc1VE-Feaw55_eUqlDUN3QQfxnvBjCuuHguSM'
+        },
         url: '/solution/add',
         data: {
             title,
             content,
             cover_url,
             tags,
-            short_content,
             problem_id: parseInt(problem_id)
         }
     })

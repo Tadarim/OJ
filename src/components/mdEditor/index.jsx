@@ -9,7 +9,7 @@ import { EditorWrapper } from './styled'
 
 const MdEditor = memo((props) => {
 
-  const { mode, cancelHandler, btnText, publishHandler } = props
+  const { mode, cancelHandler, btnText, publishHandler, userName } = props
 
   const [value, setValue] = useState('')
 
@@ -47,6 +47,7 @@ const MdEditor = memo((props) => {
     setTagsEleList(newList)
   }
 
+  const [link, setLink] = useState('')
   const topicList = ['求职面试', '职场与内推', '意见反馈', '技术交流', '文章分享']
   const tagsList = ['C', 'Golang', 'JavaScript']
 
@@ -68,26 +69,37 @@ const MdEditor = memo((props) => {
       const formData = new FormData();
       formData.append('quill-image', file);
 
-      try {
-        uploadImageHandler(formData, function (data) { // 上传图片
-          if (data.code === 0) {
-            // const range = quill.getSelection();
-            const range = quill.selection.savedRange.index
-            console.log(range)
-            const link = data.data?.upload_results?.utl; // 图片地址
-            quill.insertEmbed(range, 'image', link); // 插入图片
-            quill.setSelection(1 + range)
-            message.success('上传图片成功');
-          } else {
-            message.error('上传图片失败');
-          }
-        });
-      } catch (e) {
-        console.log(e);
-        message.error('上传图片失败');
-      }
+      uploadImageHandler(formData, function (data) { // 上传图片
+        if (data.code === 0) {
+          // const range = quill.getSelection();
+          const range = quill.selection.savedRange.index
+          const link = data.data?.upload_results[0]?.url; // 图片地址
+          link && setLink(link)
+          console.log(link)
+          quill.insertEmbed(range, 'image', link); // 插入图片
+          quill.setSelection(1 + range)
+          message.success('上传图片成功');
+        } else {
+          message.error('上传图片失败');
+        }
+      });
     };
   };
+
+  const publishModeHandler = (content, title, tags, cove_url) => {
+    switch (mode) {
+      case 'reply':
+        publishHandler(content,'reply')
+        break;
+      case 'replies':
+        publishHandler(content,'replies')
+        break;
+      default:
+        publishHandler(content, title, tags, cove_url)
+        break;
+    }
+  }
+
 
   const modules = useMemo(() => ({
     toolbar: {
@@ -142,21 +154,30 @@ const MdEditor = memo((props) => {
           <div className="title">
             {
               mode !== 'reply' &&
+              (
+                mode !== 'replies'
+                ?
               <input
                 placeholder="此处输入标题…"
                 value={title}
-                onChange={(e) => { setTitle(e.target.value) }}
+                onChange={(e)=>setTitle(e.target.value)}
               />
+                :
+                <input
+                  value={`回复@${userName}`}
+                  disabled={true}
+                />
+              )
             }
             <button className="cancelBtn" onClick={cancelHandler}>
               <span>取消</span>
             </button>
-            <button className="publishBtn" onClick={() => { publishHandler(title, value) }}>
+            <button className="publishBtn" onClick={() => { publishModeHandler(value, title, tagsEleList.join(" "), link) }}>
               <span>{btnText}</span>
             </button>
           </div>
           {
-            mode !== 'reply' &&
+            (mode !== 'reply' && mode != 'replies') &&
             <div className="tags">
               {
                 mode === 'topic' &&

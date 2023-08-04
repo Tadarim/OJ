@@ -15,6 +15,9 @@ export const ProblemWrapper = styled.div`
 
     .main-item-title{
         flex: 3 3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         .title{
             display: flex;
@@ -25,6 +28,9 @@ export const ProblemWrapper = styled.div`
 
     .main-item-solution{
         flex: 2 2 ;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         .solution{
             margin-left: -1rem;
@@ -37,6 +43,9 @@ export const ProblemWrapper = styled.div`
 
     .main-item-difficulty{
         flex: 2 2 ;
+        display: flex;
+        justify-content: center;
+        align-items: center;
                         
         .difficulty{
             display: flex;

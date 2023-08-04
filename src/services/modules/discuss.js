@@ -1,9 +1,12 @@
 import XYRequest from '..'
-import XXRequest from '../request/authRequest'
 
+const token = localStorage.getItem("OJToken")
 //默认最新 1为最热
 export function getDiscussList(page, type) {
     return XYRequest.get({
+        headers: {
+            Authorization: token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjQsImV4cCI6MTY5MDg3ODgwMiwibmJmIjoxNjkwNzkyNDAyLCJpYXQiOjE2OTA3OTI0MDJ9.Qt_0u-nc1VE-Feaw55_eUqlDUN3QQfxnvBjCuuHguSM'
+        },
         url: '/discuss/list',
         params: {
             page,
@@ -19,11 +22,11 @@ export function getDiscussEveryList() {
     })
 }
 
-export function getDiscussDetail(did) {
+export function getDiscussDetail(id) {
     return XYRequest.get({
         url: '/discuss/get',
         params: {
-            did
+            id
         }
     })
 }
@@ -41,15 +44,17 @@ export function searchDiscuss(key_word, page, type) {
     })
 }
 
-export function PublishDiscuss(title, content, tags, cover_url, short_content) {
-    return XXRequest.post({
+export function PublishDiscuss(content, title, tags, cover_url) {
+    return XYRequest.post({
+        headers: {
+            Authorization: token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjQsImV4cCI6MTY5MDg3ODgwMiwibmJmIjoxNjkwNzkyNDAyLCJpYXQiOjE2OTA3OTI0MDJ9.Qt_0u-nc1VE-Feaw55_eUqlDUN3QQfxnvBjCuuHguSM'
+        },
         url: '/discuss/add',
         data: {
             title,
             content,
             tags,
-            cover_url,
-            short_content
+            cover_url
         }
     })
 }

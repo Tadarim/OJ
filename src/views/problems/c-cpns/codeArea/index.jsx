@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useId, useRef, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-jsx';// jsx模式的包
 import 'ace-builds/src-noconflict/theme-iplastic';// 主题样式
@@ -9,27 +9,19 @@ import { CodeAreaWrapper } from './styled'
 import { changeCodeLangAction } from '../../../../store/modules/problem';
 import { useDispatch, useSelector } from 'react-redux';
 
-import 'react-quill/dist/quill.snow.css';
-import { codeSubmit } from '../../../../services/modules/submit';
-import { useNavigate, useParams } from 'react-router-dom';
 
 
-const CodeArea = memo(({submitHandler}) => {
+const CodeArea = memo(({ submitHandler, codeTemplate }) => {
 
-    const { pid } = useParams()
-    const navigate = useNavigate()
-
-    const { codeTemplate, userId } = useSelector((state) => ({
-        codeTemplate: state.problem.codeTemplate,
-        userId: state.login.userId
-    }))
+    // const { codeTemplate} = useSelector((state) => ({
+    //     codeTemplate: state.problem.codeTemplate,
+    // }))
 
     const [codeLang, setCodeLang] = useState('C')
+    const [doc, setDoc] = useState('');
     let [template] = codeTemplate?.filter((item) => {
         return item.language === codeLang
     })
-    const [doc, setDoc] = useState(template?.template);
-
     const [showList, setShowList] = useState(false)
     const langList = ['C', 'Golang', 'JavaScript']
     const dispatch = useDispatch()
@@ -42,14 +34,9 @@ const CodeArea = memo(({submitHandler}) => {
         setShowList(!showList)
     }
 
-    // const submitHandler = async (userId, pid, language, doc) => {
-    //     const res = await codeSubmit(userId, pid, language, doc)
-    //     navigate(`/problems/${pid}/submissions`,{state:{res:res}})
-    // }
-
     useEffect(() => {
         setDoc(template?.template)
-    }, [template?.template])
+    }, [codeTemplate,template?.template])
 
     return (
         <CodeAreaWrapper>
@@ -112,7 +99,7 @@ const CodeArea = memo(({submitHandler}) => {
             </div>
             <div className="code-area-bottom-container">
                 <div className="submit-container">
-                    <button className="submit" onClick={() => { submitHandler(pid, codeLang, doc) }}>
+                    <button className="submit" onClick={() => { submitHandler(doc, codeLang) }}>
                         <span>提交</span>
                     </button>
                 </div>

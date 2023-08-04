@@ -98,23 +98,27 @@ export const RepliesWrapper = styled.div`
                 padding: 0px;
                 margin-top: 6px;    
                 
-                .replies-answerMarkdownContent > :last-child {
+                & > :last-child {
                     margin-bottom: 0px;
                 }
 
-                .replies-answerMarkdownContent p {
+                p {
                     margin: 8px 0px;
                 }
 
 
-                .replies-answerMarkdownContent > * {
+                & > * {
                     margin-bottom: 16px;
                 }
 
-                .replies-answerMarkdownContent * {
+                 * {
                     font-size: 16px;
                     line-height: 162%;
                     -webkit-print-color-adjust: exact;
+                }
+
+                a{
+                    color: rgb(0,122,255)
                 }
             }
         }
@@ -171,6 +175,16 @@ export const RepliesWrapper = styled.div`
                                     svg{
                                         color: rgba(45,181,93,1);
                                         background-color: rgba(45,181,93,0.08);
+                                    }
+
+                                    span{
+                                        color: rgba(45,181,93,1);
+                                    }
+                                }
+
+                                &.active{
+                                    svg{
+                                        color: rgba(45,181,93,1);
                                     }
 
                                     span{

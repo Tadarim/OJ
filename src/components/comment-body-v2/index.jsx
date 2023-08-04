@@ -1,51 +1,89 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { BodyWrapper } from './styled'
 import { useState } from 'react'
 
+import { likeHandler } from '../../services/modules/like'
+import { submitComment } from '../../services/modules/comment'
 import CommentsEditor from '../comment-editor'
+import { getDate } from '../../utils/getDate'
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
+import classNames from 'classnames'
 
-const CommentBodyV2 = memo((props) => {
+const CommentBodyV2 = memo(({ detail, id, rootId, type }) => {
+
 
     const commitHandler = () => {
         setShowEditor(true)
     }
-
     const cancelHandler = () => {
         setShowEditor(false)
     }
-
-
+    const fetchReplyPublishResult = async (content) => {
+        const res = await submitComment(content, id, type, detail.id, rootId)
+        setShowEditor(false)
+    }
+    const replyPublishHandler = (content) =>{
+        fetchReplyPublishResult(content)
+    }
     const [showEditor, setShowEditor] = useState(false)
+
+    const [selected, setSelected] = useState(-1)
+    const [text, setText] = useState("")
+    const upvoteAddHandler = (operator_id) => {
+      setSelected(operator_id)
+      setText(prevState => prevState + 1)
+    }
+    const upvoteSubHandler = () => {
+      setSelected(-1)
+      setText(prevState => prevState - 1)
+    }
+    const upvoteBtnHandler = async (type, operator_id) => {
+      let is_like;
+      selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
+      selected === operator_id ? is_like = -1 : is_like = 1
+      likeHandler(type, operator_id, is_like)
+    }
+   useEffect(() => {
+      setText(detail.likes_count)
+      if(detail.like_status){
+        setSelected(detail.id)
+      }else{
+        setSelected(-1)
+      }
+    }, [detail.likes_count,detail.likes_status,detail.id])
 
     return (
         <BodyWrapper>
             <div className="comment-header">
                 <div className="avatar-wrapper">
-                    <a href={"/u/susu-5/"}>
-                        <img src="https://assets.leetcode.cn/aliyun-lc-upload/default_avatar.png" alt="susu-5" className="css-17cu2v5-CommentAvatar e19tnut63" />
+                    <a href={`/profile/${detail.user_id}`}>
+                        <img src={detail.user.avatar_url} alt="susu-5" />
                     </a>
                     <div className="userName-wrapper">
-                        <span>susu</span>
+                        <span>{detail.user.user_name}</span>
                     </div>
                 </div>
                 <div className="right-wrapper">
-                    <span>未知归属地</span>
+                    <span>{detail.location}</span>
                     <div className="dot"></div>
-                    <span>2019-03-12</span>
+                    <span>{getDate(detail.created_at)}</span>
                 </div>
             </div>
             <div className="comment-content">
-                <p>根据上一题的提示，很快写出来和答案一样的代码，哈哈 开心  大家给个赞好么ლ(′◉❥◉｀ლ)</p>
+                <ReactMarkdown children={detail.content} />
             </div>
 
-            {showEditor ? <CommentsEditor cancel={true} cancelHandler={cancelHandler} ></CommentsEditor> :
+            {showEditor 
+                ? 
+                <CommentsEditor cancel={true} cancelHandler={cancelHandler} replyHandler={replyPublishHandler} /> 
+                :
                 <div className="comment-toolbar">
-                    <button type="button">
+                    <button type="button" className={classNames('upvoteBtn',{active:selected === detail.id})} onClick={()=>{upvoteBtnHandler(5,detail.id)}}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
                             <path fillRule="evenodd" d="M7.04 9.11l3.297-7.419a1 1 0 01.914-.594 3.67 3.67 0 013.67 3.671V7.33h4.028a2.78 2.78 0 012.78 3.2l-1.228 8.01a2.778 2.778 0 01-2.769 2.363H5.019a2.78 2.78 0 01-2.78-2.78V11.89a2.78 2.78 0 012.78-2.78H7.04zm-2.02 2a.78.78 0 00-.781.78v6.232c0 .431.35.78.78.78H6.69V11.11H5.02zm12.723 7.793a.781.781 0 00.781-.666l1.228-8.01a.78.78 0 00-.791-.898h-5.04a1 1 0 01-1-1V4.77c0-.712-.444-1.32-1.07-1.56L8.69 10.322v8.58h9.053z" clipRule="evenodd">
                             </path>
                         </svg>
-                        <span className="btnContent">852</span>
+                        <span className="btnContent">{text}</span>
                     </button>
                     <button type="button" onClick={commitHandler}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">

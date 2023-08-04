@@ -14,6 +14,8 @@ const Solution = React.lazy(() => import("../views/problems/c-cpns/solution"))
 const Circle = React.lazy(() => import('../views/circle'))
 const Discuss = React.lazy(() => import('../views/circle/c-cpns/discuss'))
 const Search = React.lazy(() => import('../views/search'))
+const Profile = React.lazy(() => import('../views/profile'))
+const NotFound = React.lazy(() => import('../views/not found'))
 
 const routes = [
     {
@@ -67,7 +69,6 @@ const routes = [
         path: '/problems',
         element: <Navigate to={"/problemset"}></Navigate>
     },
-
     {
         path: '/problems/:pid',
         element: <Problems></Problems>,
@@ -116,6 +117,18 @@ const routes = [
     {
         path: '/search',
         element: <Search></Search>
+    },
+    {
+        path: '/profile',
+        element: <Profile />
+    },
+    {
+        path: '/profile/:uid',
+        element: <Profile></Profile>
+    },
+    {
+        path:'/404',
+        element: <NotFound></NotFound>
     }
 ]
 

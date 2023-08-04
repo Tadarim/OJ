@@ -7,13 +7,14 @@ import MdEditor from '../../../../components/mdEditor'
 import { useParams } from 'react-router-dom'
 import { getDate } from '../../../../utils/getDate'
 import { PublishDiscuss, getDiscussDetail } from '../../../../services/modules/discuss'
-import { getCommentList, submitComment } from '../../../../services/modules/comment'
+import { getCommentList, getReplyList, submitComment } from '../../../../services/modules/comment'
 import Paginations from '../../../../base-ui/pagination'
+import { likeHandler } from '../../../../services/modules/like'
+import classNames from 'classnames'
 
 const Discuss = memo(() => {
 
   const { did } = useParams()
-  console.log(did)
 
   const [showReplyEditor, setShowReplyEditor] = useState(false)
   const [commentsList, setCommentsList] = useState([])
@@ -40,15 +41,22 @@ const Discuss = memo(() => {
       "user_name": "ctTwNF3Vg"
     }
   )
+
+  const [options, setOptions] = useState({
+    userName: '',
+    replyedId: '',
+    rootId: ''
+  })
   const [page, setPage] = useState(1)
   const pageChangeHandler = (page) => {
     setPage(page)
   }
 
+  const [isSecond, setIsSecond] = useState(false)
   const replyHandler = () => {
     setShowReplyEditor(!showReplyEditor)
+    setIsSecond(false)
   }
-
   const fetchDiscussDetail = async () => {
     const res = await getDiscussDetail(did)
     setDetail(res?.data)
@@ -58,22 +66,70 @@ const Discuss = memo(() => {
     setCommentsList(res.data?.list)
     setCommentsTotal(res.data?.total)
   }
-
-  const fetchPublishResult = async(content, operator_id, type) => {
-    const res = await submitComment(content, operator_id ,type)
+  const fetchPublishResult = async (content, operator_id = did, type = 1) => {
+    const res = await submitComment(content, operator_id, type)
+    if (res.code === 0) {
+      fetchDiscussComments(1, did, page)
+      fetchDiscussDetail(did)
+    }
     setShowReplyEditor(false)
-    fetchDiscussComments()
+  }
+  const fetchReplyPublishResult = async (content) => {
+    const res = await submitComment(content, did, 1, options.replyedId, options.rootId)
+    if (res.code === 0) {
+      fetchDiscussComments(1, did, page)
+      fetchDiscussDetail(did)
+    }
+    setShowReplyEditor(false)
+  }
+  const publishCommentHandler = (content, mode) => {
+    switch (mode) {
+      case 'reply':
+        fetchPublishResult(content)
+        break;
+      default:
+        fetchReplyPublishResult(content)
+    }
+
   }
 
-  const publishDiscussHandler = ( content,operator_id=did,type=1) =>{
-    console.log(type)
-    fetchPublishResult( content,operator_id,type)
+  const addReplyHandler = (option) => {
+    console.log(option)
+    setShowReplyEditor(!showReplyEditor)
+    setIsSecond(true)
+    setOptions(option)
   }
 
-  // useEffect(() => {
-  //   fetchDiscussDetail()
-  //   fetchDiscussComments()
-  // }, [])
+  useEffect(() => {
+    fetchDiscussDetail(did)
+    fetchDiscussComments(1, did, page)
+  }, [did, page])
+
+  const [selected, setSelected] = useState(-1)
+  const [text, setText] = useState("")
+  const upvoteAddHandler = (operator_id) => {
+    setSelected(operator_id)
+    setText(prevState => prevState + 1)
+  }
+  const upvoteSubHandler = () => {
+    setSelected(-1)
+    setText(prevState => prevState - 1)
+  }
+  const upvoteBtnHandler = async (type, operator_id) => {
+    let is_like;
+    selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
+    selected === operator_id ? is_like = -1 : is_like = 1
+    likeHandler(type, operator_id, is_like)
+  }
+  useEffect(() => {
+    setText(detail.entity.likes_count)
+    if (detail.like_status) {
+      setSelected(detail.id)
+    } else {
+      setSelected(-1)
+    }
+  }, [detail.entity.likes_count, detail.like_status, detail.id])
+
 
   return (
     <DiscussWrapper>
@@ -96,7 +152,7 @@ const Discuss = memo(() => {
                 </div>
                 <div className="discuss-content">
                   <div className="discuss-title">
-                    <a href="/u/leetcode/">
+                    <a href={`/profile/${detail.entity.user_id}`}>
                       <img src={detail?.avatar_url} alt='' />
                     </a>
                     <span className="css-jkstne-StyledTitle e2v1tt7">{detail.entity.title}</span>
@@ -121,12 +177,14 @@ const Discuss = memo(() => {
                   <div className="discussAction-wrapper">
                     <div className="reactionWrapper">
                       <div className="reactionBtnInBarWrapper">
-                        <div className="reactionUpvoteBtnWrapper">
+                        <div
+                          className={classNames("reactionUpvoteBtnWrapper", { active: selected === detail.entity.id })}
+                          onClick={() => { upvoteBtnHandler(1, detail.entity.id) }}>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" >
                             <path fillRule="evenodd" d="M7.04 9.11l3.297-7.419a1 1 0 01.914-.594 3.67 3.67 0 013.67 3.671V7.33h4.028a2.78 2.78 0 012.78 3.2l-1.228 8.01a2.778 2.778 0 01-2.769 2.363H5.019a2.78 2.78 0 01-2.78-2.78V11.89a2.78 2.78 0 012.78-2.78H7.04zm-2.02 2a.78.78 0 00-.781.78v6.232c0 .431.35.78.78.78H6.69V11.11H5.02zm12.723 7.793a.781.781 0 00.781-.666l1.228-8.01a.78.78 0 00-.791-.898h-5.04a1 1 0 01-1-1V4.77c0-.712-.444-1.32-1.07-1.56L8.69 10.322v8.58h9.053z" clipRule="evenodd">
                             </path>
                           </svg>
-                          <span className="reactionUpvoteBtnText">{detail.entity.likes_count}</span>
+                          <span className="reactionUpvoteBtnText">{text}</span>
                         </div>
                       </div>
                     </div>
@@ -145,13 +203,25 @@ const Discuss = memo(() => {
               {
                 showReplyEditor &&
                 <div className="mdEditor-wrapper">
-                  <MdEditor
-                    mode='reply'
-                    btnText='回复讨论'
-                    cancelHandler={replyHandler}
-                    publishHandler={publishDiscussHandler}
-                  >
-                  </MdEditor>
+                  {
+                    isSecond
+                      ?
+                      <MdEditor
+                        mode='replies'
+                        btnText='回复'
+                        userName={options.userName}
+                        cancelHandler={replyHandler}
+                        publishHandler={publishCommentHandler}
+                      />
+                      :
+                      <MdEditor
+                        mode='reply'
+                        btnText='回复讨论'
+                        cancelHandler={replyHandler}
+                        publishHandler={publishCommentHandler}
+                      />
+                  }
+
                 </div>
               }
               <div className="sorting-wrapper">
@@ -162,18 +232,20 @@ const Discuss = memo(() => {
               <div className="zoom-wrapper">
                 <div className="list-wrapper">
                   {
-                    commentsList?.map((item,index) => 
-                      <DiscussReply comment={item} key={index} />
+                    commentsList?.map((item, index) =>
+                      <DiscussReply comment={item} key={index} addReplyHandler={addReplyHandler} />
                     )
                   }
                 </div>
               </div>
-              <div className="pagination-wrapper">
-                <Paginations
-                  total={commentsTotal}
-                  pageChangeHandler={pageChangeHandler}
-                />
-              </div>
+
+                <div className="pagination-wrapper">
+                  <Paginations
+                    total={commentsTotal}
+                    pageChangeHandler={pageChangeHandler}
+                  />
+                </div>
+  
             </div>
           </div>
           <div className="aside-wrapper">
@@ -188,10 +260,10 @@ const Discuss = memo(() => {
               <div className="tags-header">相关标签</div>
               <div>
                 {
-                  detail.entity.tags.split(' ').map((item,index) => 
-                  <span className="basicTag" key={index}>
-                    <span>{item}</span>
-                  </span>
+                  detail.entity.tags.split(' ').map((item, index) =>
+                    <span className="basicTag" key={index}>
+                      <span>{item}</span>
+                    </span>
                   )
                 }
               </div>

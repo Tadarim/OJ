@@ -7,12 +7,15 @@ import classNames from 'classnames'
 import ArticleItem from '../../base-ui/article-item'
 import { PublishDiscuss, getDiscussEveryList, getDiscussList, searchDiscuss } from '../../services/modules/discuss'
 import Paginations from '../../base-ui/pagination'
+import { useNavigate } from 'react-router-dom'
 
 const tabList = [{ desc: '最热', key: 'hottest' }, { desc: '最新', key: 'newest' }]
 
 const Circle = memo(() => {
 
-    const [type,setType] = useState(1)
+    const navigate = useNavigate()
+
+    const [type, setType] = useState(1)
     const [tabSelected, setTabSelected] = useState(0)
     const [tagsEleList, setTagsEleList] = useState([])
     const [tagsList, setTagsList] = useState(['C', 'Golang', 'JavaScript'])
@@ -28,12 +31,13 @@ const Circle = memo(() => {
         setPage(newPage)
     }
 
-    //请求
-    const fetchDiscussList = async (page,type) => {
-        const res = await getDiscussList(page,type)
+    //请求讨论列表
+    const fetchDiscussList = async (page, type) => {
+        const res = await getDiscussList(page, type)
         setDiscussList(res.data?.list)
         setDiscussTotal(res.data?.total)
     }
+    //请求讨论榜单
     const fetchDiscussEveryList = async () => {
         const res = await getDiscussEveryList()
         setDiscussEveryList(res.data?.days_discuss)
@@ -43,21 +47,22 @@ const Circle = memo(() => {
         setDiscussList(res.data?.list)
         setDiscussTotal(res.data?.total)
     }
-    const fetchPublishResult = async(title, content, tags, cover_url, short_content) => {
-        const res = await PublishDiscuss(title, content, tags, cover_url, short_content)
+    const fetchPublishResult = async (content, title, cover_url, tags) => {
+        const res = await PublishDiscuss(content, title, cover_url, tags)
         setShowPublishEditor(false)
-        // fetchDiscussList()
-      }
-    
-    const publishDiscussHandler = (title, content, tags, cover_url, short_content) =>{
-        fetchPublishResult(title, content, tags, cover_url, short_content)
+        if(res.code === 0){
+            fetchDiscussList(page, type)
+        }
     }
 
+    const publishDiscussHandler = (content, title, cover_url, tags) => {
+        fetchPublishResult(content, title, cover_url, tags)
+    }
     const tagsSearchHandler = (key_word) => {
         if (key_word.length) {
             fetchSearchResultList(key_word, page, 2)
         } else {
-            fetchDiscussList(page)
+            fetchDiscussList(page, type)
         }
     }
 
@@ -81,7 +86,7 @@ const Circle = memo(() => {
     const inputChangeHandler = (e) => {
         setInputValue(e.target.value)
         if (e.target.value === '') {
-            fetchDiscussList(page)
+            fetchDiscussList(page, type)
         }
     }
     const inputKeyBoardHandler = (event) => {
@@ -90,10 +95,14 @@ const Circle = memo(() => {
         }
     }
 
+    const linkToDetailHandler = (did) => {
+        navigate(`discuss/${did}`)
+    }
+
     useEffect(() => {
-        fetchDiscussList(page,type)
+        fetchDiscussList(page, type)
         fetchDiscussEveryList()
-    }, [page,type])
+    }, [page, type])
 
     return (
         <CircleWrapper>
@@ -106,10 +115,10 @@ const Circle = memo(() => {
                                     <div className={classNames("tab-item", { active: tabSelected === index })}
                                         key={item.key}
                                         onClick={() => {
-                                            setTabSelected(index) 
-                                            if(index === 0){
+                                            setTabSelected(index)
+                                            if (index === 0) {
                                                 setType(1)
-                                            }else{
+                                            } else {
                                                 setType('')
                                             }
                                         }}
@@ -173,7 +182,13 @@ const Circle = memo(() => {
                             <div>
                                 {
                                     discussList?.map((item, index) =>
-                                        <ArticleItem article={item} key={index}></ArticleItem>
+                                        <ArticleItem 
+                                            article={item} 
+                                            key={index} 
+                                            linkHandler={linkToDetailHandler} 
+                                            type={1}
+                                            link={'/circle/discuss/'}   
+                                        />
                                     )
                                 }
                             </div>

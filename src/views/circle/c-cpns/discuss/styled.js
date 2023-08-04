@@ -209,6 +209,26 @@ export const DiscussWrapper = styled.div`
                                     color: rgba(60,60,67,0.6);
                                     font-weight: 500;
 
+                                    &:hover{
+                                        svg{
+                                            color:rgb(45,181,93) !important;
+                                        }
+                                    
+                                        span{
+                                            color:rgb(45,181,93) !important;
+                                        }
+                                    }
+                                    &.active{
+                                        svg{
+                                            color:rgb(45,181,93) !important;
+                                        }
+                                    
+                                        span{
+                                            color:rgb(45,181,93) !important;
+                                        }
+                                    }
+                                    
+
                                     svg{
                                         padding: 2px;
                                         height: 24px;
