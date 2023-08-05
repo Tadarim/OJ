@@ -4,42 +4,43 @@ import { useDispatch, useSelector } from 'react-redux'
 import { changeDiscussListAction, changeIsLikeAction } from '../../store/modules/like'
 import classNames from 'classnames'
 import { likeHandler } from '../../services/modules/like'
+import Upvote from '../../components/upvote/upvote'
 
 const ArticleItem = memo((props) => {
 
   const { article, linkHandler, type, link } = props
 
-  const [selected, setSelected] = useState(-1)
-  const [text, setText] = useState("")
-  const upvoteAddHandler = (operator_id) => {
-    setSelected(operator_id)
-    setText(prevState => prevState + 1)
-  }
-  const upvoteSubHandler = () => {
-    setSelected(-1)
-    setText(prevState => prevState - 1)
-  }
-  const upvoteBtnHandler = async (type, operator_id) => {
-    let is_like;
-    selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
-    selected === operator_id ? is_like = -1 : is_like = 1
-    likeHandler(type, operator_id, is_like)
-  }
- useEffect(() => {
-    setText(article.likes_count)
-    if(article.like_status){
-      setSelected(article.id)
-    }else{
-      setSelected(-1)
-    }
-  }, [article.likes_count,article.likes_status,article.id])
+  // const [selected, setSelected] = useState(-1)
+  // const [text, setText] = useState("")
+  // const upvoteAddHandler = (operator_id) => {
+  //   setSelected(operator_id)
+  //   setText(prevState => prevState + 1)
+  // }
+  // const upvoteSubHandler = () => {
+  //   setSelected(-1)
+  //   setText(prevState => prevState - 1)
+  // }
+  // const upvoteBtnHandler = async (type, operator_id) => {
+  //   let is_like;
+  //   selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
+  //   selected === operator_id ? is_like = -1 : is_like = 1
+  //   likeHandler(type, operator_id, is_like)
+  // }
+  // useEffect(() => {
+  //   setText(article.likes_count)
+  //   if (article.like_status) {
+  //     setSelected(article.id)
+  //   } else {
+  //     setSelected(-1)
+  //   }
+  // }, [article.likes_count, article.likes_status, article.id])
 
   return (
     <ItemWrapper>
       {
         article.cover_url
         &&
-        <a href={link+`${article.id}`} className='img-wrapper'>
+        <a href={link + `${article.id}`} className='img-wrapper'>
           <img src={article.cover_url} alt="" />
         </a>
       }
@@ -50,12 +51,12 @@ const ArticleItem = memo((props) => {
               <img src={article.avatar_url} size="20" alt='' />
             </a>
             <h3 className="title-wrapper" onClick={() => linkHandler(article.id)}>
-              <a href={link+`${article.id}`}>
+              <a href={link + `${article.id}`}>
                 <span className="title-text">{article.title}</span>
               </a>
             </h3>
           </div>
-          <a href={link+`${article.id}`} className='contentWrapper'>
+          <a href={link + `${article.id}`} className='contentWrapper'>
             <div className="content-wrap">
               <div className="desc-wrapper">
                 {article.short_content}
@@ -65,7 +66,14 @@ const ArticleItem = memo((props) => {
         </div>
         <div className="toolbar-wrapper">
           <div className='toolbar'>
-            <div className="reaction-wrapper" >
+            <Upvote
+              likes_count={article.likes_count} 
+              like_status={article.like_status} 
+              type={type} 
+              id={article.id} 
+              mode={1}  
+            />
+            {/* <div className="reaction-wrapper" >
               <div className="reaction">
                 <div className="reactionBtn">
                   <div className={classNames("upvoteBtn", { active: selected === article.id })} onClick={() => upvoteBtnHandler(type, article.id)}>
@@ -76,7 +84,7 @@ const ArticleItem = memo((props) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="splitLine"></div>
             <button className='replyBtn' onClick={() => linkHandler(article.id)}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" color="rgba(var(--dsw-base-grey-6-rgb), 1)">

@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { likeHandler } from '../../../../services/modules/like'
 import classNames from 'classnames'
+import Upvote from '../../../../components/upvote/upvote'
 
 const DiscussReply = memo(({ comment, addReplyHandler }) => {
 
@@ -36,30 +37,30 @@ const DiscussReply = memo(({ comment, addReplyHandler }) => {
         setShowReplyList(!showReplyList)
     }
 
-    const [selected, setSelected] = useState(-1)
-    const [text, setText] = useState("")
-    const upvoteAddHandler = (operator_id) => {
-      setSelected(operator_id)
-      setText(prevState => prevState + 1)
-    }
-    const upvoteSubHandler = () => {
-      setSelected(-1)
-      setText(prevState => prevState - 1)
-    }
-    const upvoteBtnHandler = async (type, operator_id) => {
-      let is_like;
-      selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
-      selected === operator_id ? is_like = -1 : is_like = 1
-      likeHandler(type, operator_id, is_like)
-    }
-   useEffect(() => {
-      setText(comment.likes_count)
-      if(comment.like_status){
-        setSelected(comment.id)
-      }else{
-        setSelected(-1)
-      }
-    }, [comment.likes_count,comment.likes_status,comment.id])
+//     const [selected, setSelected] = useState(-1)
+//     const [text, setText] = useState("")
+//     const upvoteAddHandler = (operator_id) => {
+//       setSelected(operator_id)
+//       setText(prevState => prevState + 1)
+//     }
+//     const upvoteSubHandler = () => {
+//       setSelected(-1)
+//       setText(prevState => prevState - 1)
+//     }
+//     const upvoteBtnHandler = async (type, operator_id) => {
+//       let is_like;
+//       selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
+//       selected === operator_id ? is_like = -1 : is_like = 1
+//       likeHandler(type, operator_id, is_like)
+//     }
+//    useEffect(() => {
+//       setText(comment.likes_count)
+//       if(comment.like_status){
+//         setSelected(comment.id)
+//       }else{
+//         setSelected(-1)
+//       }
+//     }, [comment.likes_count,comment.likes_status,comment.id])
     
     return (
         <ReplyWrapper>
@@ -87,7 +88,14 @@ const DiscussReply = memo(({ comment, addReplyHandler }) => {
             </div>
             <div className="answerOperation">
                 <div className="operationWrapper">
-                    <div className="reactionV2Wrapper">
+                    <Upvote
+                        likes_count={comment.likes_count} 
+                        like_status={comment.like_status} 
+                        type={4} 
+                        id={comment.id} 
+                        mode={1}
+                    />
+                    {/* <div className="reactionV2Wrapper">
                         <div className="reactionWraper">
                             <div className="reactionBtnInBarWrapper">
                                 <div className={classNames("reactionUpvoteBtnWrapper",{active: selected === comment.id})} onClick={()=>{upvoteBtnHandler(4,comment.id)}}>
@@ -99,7 +107,7 @@ const DiscussReply = memo(({ comment, addReplyHandler }) => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="splitLine"></div>
                     <button className="baseButtonComponent-OperationButton" onClick={() => { showRepliesHandler(comment.id) }}>
                         {

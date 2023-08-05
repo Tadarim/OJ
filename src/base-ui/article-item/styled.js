@@ -140,7 +140,7 @@ export const ItemWrapper = styled.div`
                 position: sticky;
                 bottom: 0px;
                 /* z-index: 1000; */
-
+/* 
                 .reaction-wrapper{
                     margin-left: 10px;
 
@@ -202,7 +202,7 @@ export const ItemWrapper = styled.div`
                             }
                         }
                     }
-                }
+                } */
 
                 .splitLine{
                     margin-right: 8px;

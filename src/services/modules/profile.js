@@ -3,7 +3,6 @@ import XYRequest from '..'
 const token = localStorage.getItem('OJToken') 
 
 export function getProfileInfo(page,user_id){
-    console.log(user_id)
     return XYRequest.get({
         headers: {
             Authorization: token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjQsImV4cCI6MTY5MDg3ODgwMiwibmJmIjoxNjkwNzkyNDAyLCJpYXQiOjE2OTA3OTI0MDJ9.Qt_0u-nc1VE-Feaw55_eUqlDUN3QQfxnvBjCuuHguSM'

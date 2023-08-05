@@ -4,35 +4,36 @@ import { getDate } from '../../../../utils/getDate'
 import { likeHandler } from '../../../../services/modules/like'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import classNames from 'classnames'
+import Upvote from '../../../../components/upvote/upvote'
 
 const DiscussReplies = memo((props) => {
 
     const { detail, addReplyHandler } = props
 
-    const [selected, setSelected] = useState(-1)
-    const [text, setText] = useState("")
-    const upvoteAddHandler = (operator_id) => {
-      setSelected(operator_id)
-      setText(prevState => prevState + 1)
-    }
-    const upvoteSubHandler = () => {
-      setSelected(-1)
-      setText(prevState => prevState - 1)
-    }
-    const upvoteBtnHandler = async (type, operator_id) => {
-      let is_like;
-      selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
-      selected === operator_id ? is_like = -1 : is_like = 1
-      likeHandler(type, operator_id, is_like)
-    }
-   useEffect(() => {
-      setText(detail.likes_count)
-      if(detail.like_status){
-        setSelected(detail.id)
-      }else{
-        setSelected(-1)
-      }
-    }, [detail.likes_count,detail.likes_status,detail.id])
+    //     const [selected, setSelected] = useState(-1)
+    //     const [text, setText] = useState("")
+    //     const upvoteAddHandler = (operator_id) => {
+    //       setSelected(operator_id)
+    //       setText(prevState => prevState + 1)
+    //     }
+    //     const upvoteSubHandler = () => {
+    //       setSelected(-1)
+    //       setText(prevState => prevState - 1)
+    //     }
+    //     const upvoteBtnHandler = async (type, operator_id) => {
+    //       let is_like;
+    //       selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
+    //       selected === operator_id ? is_like = -1 : is_like = 1
+    //       likeHandler(type, operator_id, is_like)
+    //     }
+    //    useEffect(() => {
+    //       setText(detail.likes_count)
+    //       if(detail.like_status){
+    //         setSelected(detail.id)
+    //       }else{
+    //         setSelected(-1)
+    //       }
+    //     }, [detail.likes_count,detail.like_status,detail.id])
 
     return (
         <RepliesWrapper>
@@ -61,18 +62,28 @@ const DiscussReplies = memo((props) => {
                 </div>
                 <div className="replies-detailOperation">
                     <div className="replies-operationWrapper">
-                        <div className="replies-reactionV2Wrapper">
-                            <div className="replies-reactionWraper">
-                                <div className="replies-reactionBtnInBarWrapper">
-                                    <div className={classNames("replies-reactionUpvoteBtnWrapper",{active : selected === detail.id})} onClick={()=>{upvoteBtnHandler(5,detail.id)}}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" className="css-1rhb60f-Svg ea8ky5j0">
-                                            <path fillRule="evenodd" d="M7.04 9.11l3.297-7.419a1 1 0 01.914-.594 3.67 3.67 0 013.67 3.671V7.33h4.028a2.78 2.78 0 012.78 3.2l-1.228 8.01a2.778 2.778 0 01-2.769 2.363H5.019a2.78 2.78 0 01-2.78-2.78V11.89a2.78 2.78 0 012.78-2.78H7.04zm-2.02 2a.78.78 0 00-.781.78v6.232c0 .431.35.78.78.78H6.69V11.11H5.02zm12.723 7.793a.781.781 0 00.781-.666l1.228-8.01a.78.78 0 00-.791-.898h-5.04a1 1 0 01-1-1V4.77c0-.712-.444-1.32-1.07-1.56L8.69 10.322v8.58h9.053z" clipRule="evenodd"></path>
-                                        </svg>
-                                        <span>{text}</span>
+
+                        <Upvote
+                            likes_count={detail.likes_count} 
+                            like_status={detail.like_status} 
+                            type={5} 
+                            id={detail.id}
+                            mode={1} 
+                        />
+                        {/*<div className="replies-reactionV2Wrapper"> 
+                                <div className="replies-reactionWraper">
+                                    <div className="replies-reactionBtnInBarWrapper">
+                                        <div className={classNames("replies-reactionUpvoteBtnWrapper",{active : selected === detail.id})} onClick={()=>{upvoteBtnHandler(5,detail.id)}}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" className="css-1rhb60f-Svg ea8ky5j0">
+                                                <path fillRule="evenodd" d="M7.04 9.11l3.297-7.419a1 1 0 01.914-.594 3.67 3.67 0 013.67 3.671V7.33h4.028a2.78 2.78 0 012.78 3.2l-1.228 8.01a2.778 2.778 0 01-2.769 2.363H5.019a2.78 2.78 0 01-2.78-2.78V11.89a2.78 2.78 0 012.78-2.78H7.04zm-2.02 2a.78.78 0 00-.781.78v6.232c0 .431.35.78.78.78H6.69V11.11H5.02zm12.723 7.793a.781.781 0 00.781-.666l1.228-8.01a.78.78 0 00-.791-.898h-5.04a1 1 0 01-1-1V4.77c0-.712-.444-1.32-1.07-1.56L8.69 10.322v8.58h9.053z" clipRule="evenodd"></path>
+                                            </svg>
+                                            <span>{text}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
-                        </div>
+                        */}
+
                         <div className="replies-splitLine"></div>
                         <button className="replies-operationButton">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" className="css-1rhb60f-Svg ea8ky5j0">

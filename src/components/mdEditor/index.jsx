@@ -37,7 +37,6 @@ const MdEditor = memo((props) => {
   }
 
   const tagsChangeHandler = (tag) => {
-    console.log(tag)
     const newList = [...tagsEleList]
     newList.includes(tag)
       ?
@@ -75,7 +74,6 @@ const MdEditor = memo((props) => {
           const range = quill.selection.savedRange.index
           const link = data.data?.upload_results[0]?.url; // 图片地址
           link && setLink(link)
-          console.log(link)
           quill.insertEmbed(range, 'image', link); // 插入图片
           quill.setSelection(1 + range)
           message.success('上传图片成功');

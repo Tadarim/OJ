@@ -116,11 +116,5 @@ export const BodyWrapper = styled.div`
                             white-space: nowrap;
                         }
                     }
-
-                    .upvoteBtn{
-                        &.active{
-                            
-                        }
-                    }
                 }
 `

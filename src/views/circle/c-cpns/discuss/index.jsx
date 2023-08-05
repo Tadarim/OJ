@@ -11,6 +11,7 @@ import { getCommentList, getReplyList, submitComment } from '../../../../service
 import Paginations from '../../../../base-ui/pagination'
 import { likeHandler } from '../../../../services/modules/like'
 import classNames from 'classnames'
+import Upvote from '../../../../components/upvote/upvote'
 
 const Discuss = memo(() => {
 
@@ -94,7 +95,6 @@ const Discuss = memo(() => {
   }
 
   const addReplyHandler = (option) => {
-    console.log(option)
     setShowReplyEditor(!showReplyEditor)
     setIsSecond(true)
     setOptions(option)
@@ -105,30 +105,30 @@ const Discuss = memo(() => {
     fetchDiscussComments(1, did, page)
   }, [did, page])
 
-  const [selected, setSelected] = useState(-1)
-  const [text, setText] = useState("")
-  const upvoteAddHandler = (operator_id) => {
-    setSelected(operator_id)
-    setText(prevState => prevState + 1)
-  }
-  const upvoteSubHandler = () => {
-    setSelected(-1)
-    setText(prevState => prevState - 1)
-  }
-  const upvoteBtnHandler = async (type, operator_id) => {
-    let is_like;
-    selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
-    selected === operator_id ? is_like = -1 : is_like = 1
-    likeHandler(type, operator_id, is_like)
-  }
-  useEffect(() => {
-    setText(detail.entity.likes_count)
-    if (detail.like_status) {
-      setSelected(detail.id)
-    } else {
-      setSelected(-1)
-    }
-  }, [detail.entity.likes_count, detail.like_status, detail.id])
+  // const [selected, setSelected] = useState(-1)
+  // const [text, setText] = useState("")
+  // const upvoteAddHandler = (operator_id) => {
+  //   setSelected(operator_id)
+  //   setText(prevState => prevState + 1)
+  // }
+  // const upvoteSubHandler = () => {
+  //   setSelected(-1)
+  //   setText(prevState => prevState - 1)
+  // }
+  // const upvoteBtnHandler = async (type, operator_id) => {
+  //   let is_like;
+  //   selected === operator_id ? upvoteSubHandler() : upvoteAddHandler(operator_id)
+  //   selected === operator_id ? is_like = -1 : is_like = 1
+  //   likeHandler(type, operator_id, is_like)
+  // }
+  // useEffect(() => {
+  //   setText(detail.entity.likes_count)
+  //   if (detail.like_status) {
+  //     setSelected(detail.id)
+  //   } else {
+  //     setSelected(-1)
+  //   }
+  // }, [detail.entity.likes_count, detail.like_status, detail.id])
 
 
   return (
@@ -175,7 +175,14 @@ const Discuss = memo(() => {
                     </div>
                   </div>
                   <div className="discussAction-wrapper">
-                    <div className="reactionWrapper">
+                    <Upvote
+                      likes_count={detail.entity.likes_count}
+                      like_status={detail.like_status}
+                      type={1}
+                      id={detail.entity.id}
+                      mode={1}
+                    />
+                    {/* <div className="reactionWrapper">
                       <div className="reactionBtnInBarWrapper">
                         <div
                           className={classNames("reactionUpvoteBtnWrapper", { active: selected === detail.entity.id })}
@@ -187,7 +194,7 @@ const Discuss = memo(() => {
                           <span className="reactionUpvoteBtnText">{text}</span>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div style={{ "marginLeft": "auto" }}>
                       <button className="baseButton" onClick={replyHandler}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
@@ -239,13 +246,13 @@ const Discuss = memo(() => {
                 </div>
               </div>
 
-                <div className="pagination-wrapper">
-                  <Paginations
-                    total={commentsTotal}
-                    pageChangeHandler={pageChangeHandler}
-                  />
-                </div>
-  
+              <div className="pagination-wrapper">
+                <Paginations
+                  total={commentsTotal}
+                  pageChangeHandler={pageChangeHandler}
+                />
+              </div>
+
             </div>
           </div>
           <div className="aside-wrapper">
